@@ -12,7 +12,7 @@ import (
 )
 
 const (
-	address     = "dist69:6969"
+	address     = "dist70:6969"
 	defaultName = "caca"
 )
 
