@@ -14,7 +14,7 @@ import (
 
 const (
 	address     = "dist70:6969"
-	defaultName = "world"
+	defaultName = "caca"
 )
 
 func main() {
