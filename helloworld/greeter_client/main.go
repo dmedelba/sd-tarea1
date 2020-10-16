@@ -29,7 +29,7 @@ func main() {
 	// Contact the server and print out its response.
 	name := defaultName
 	if len(os.Args) > 1 {
-		log.Printf(os.Args)
+		log.Printf(os.Args[1])
 		name = os.Args[1]
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
