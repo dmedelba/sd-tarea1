@@ -26,11 +26,11 @@ func main() {
 
 
 	// Contact the server and print out its response.
-	name := defaultName
+	//name := defaultName
 	if len(os.Args) > 1 {
 		name = os.Args[1]
 	}
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+	//ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
 	
 	log.Printf("Greeting: HOLAAAAA MACA")
