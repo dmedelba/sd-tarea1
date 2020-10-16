@@ -1,0 +1,40 @@
+syntax = "proto3";
+package grpc;
+
+option go_package = "/grpc";
+
+// The greeting service definition.
+service Greeter {
+  //funciones get
+  rpc GetPedido (solicitudPedido) returns (respuestaPedido) {}
+  rpc GetSeguimiento (solicitudSeguimiento) returns (respuestaSeguimiento) {}
+}
+
+// Solicitamos un pedido
+message solicitudPedido {
+    //id-paquete tipo nombre valor origen destino
+    string idPaquete = 1;
+    string  tipo = 2;
+    string nombre = 3;
+    string valor = 4;
+    string origen = 5;
+    string destino = 6;
+
+}
+message respuestaPedido {
+    //respuesta al solicitar un pedido
+      string codigoSeguimiento = 1;
+    }
+
+//Solicitamos un seguimiento
+message solicitudSeguimiento {
+    //id-paquete tipo nombre valor origen destino
+    string codigoSeguimiento = 1; 
+    }
+
+//Respuesta del estado
+message respuestaSeguimiento {
+    //id-paquete tipo nombre valor origen destino
+    string estadoPedido = 1; 
+    }
+
