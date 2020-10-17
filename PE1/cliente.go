@@ -22,6 +22,7 @@ const (
 
 func main() {
 	// Set up a connection to the server.
+	/*
 	var conn *grpc.ClientConn
 	conn, err := grpc.Dial(address, grpc.WithInsecure())
 	if err != nil {
@@ -29,7 +30,7 @@ func main() {
 	}
 	defer conn.Close()
 	c := protos.NewGreeterClient(conn)
-
+*/
 	// Contact the server and print out its response.
 	/*
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
