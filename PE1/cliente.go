@@ -7,7 +7,7 @@ import (
 	"log"
 	"time"
 	"google.golang.org/grpc"
-	"github.com/dmedelba/sd-tarea1/PE1/protos"
+	pb "github.com/dmedelba/sd-tarea1/PE1/protos"
 )
 
 const (
@@ -29,12 +29,12 @@ func main() {
 		log.Fatalf("did not connect: %v", err)
 	}
 	defer conn.Close()
-	c := protos.NewProtosClient(conn)
+	c := pb.NewProtosClient(conn)
 	
 	// Contact the server and print out its response.
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
-	r, err := c.solicitarPedidoPyme(ctx, &protos.solicitudPedidoPyme{idPaquete: idPaquete,tipo: tipo, nombre: nombre, valor: valor, origen:origen, destino:destino})
+	r, err := c.solicitarPedidoPyme(ctx, &pb.solicitudPedidoPyme{idPaquete:idPaquete,tipo: tipo, nombre: nombre, valor: valor, origen:origen, destino:destino})
 	if err != nil {
 		log.Fatalf("could not greet: %v", err)
 	}
