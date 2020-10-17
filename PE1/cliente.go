@@ -7,7 +7,7 @@ import (
 	"log"
 	"time"
 	"google.golang.org/grpc"
-	"github.com/dmedelVVJd2aj3ba/sd-tarea1/PE1/protos"
+	"github.com/dmedel/sd-tarea1/PE1/protos"
 )
 
 const (
