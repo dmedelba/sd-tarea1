@@ -1,0 +1,81 @@
+syntax = "proto3";
+package protos;
+
+
+// The greeting service definition.
+service protos {
+  //funciones 
+  rpc solicitarPedidoPyme(solicitudPedidoPyme) returns (respuestaPedido) {}
+  rpc solicitarPedidoRetail(solicitudPedidoRetail) returns (respuestaPedido) {}
+  rpc obtenerCodigoSeguimiento(solicitudSeguimiento) returns (respuestaSeguimiento) {}
+  rpc solicitarPaquete(solicitudPaquete) returns (respuestaPaquete) {}
+  rpc obtenerEstado(solicitudEstado) returns (respuestaEstado) {}
+}
+
+/*Cliente*/
+
+// Solicitamos un pedido
+message solicitudPedidoPyme{
+    //id-paquete tipo nombre valor origen destino
+    string idPaquete = 1;
+    string  tipo = 2;
+    string nombre = 3;
+    string valor = 4;
+    string origen = 5;
+    string destino = 6;
+
+}
+
+message solicitudPedidoRetail{
+    //id-paquete tipo nombre valor origen destino
+    string idPaquete = 1;
+    string nombre = 2;
+    string valor = 3;
+    string origen = 4;
+    string destino = 5;
+
+}
+
+//respuesta al solicitar un pedido tanto pyme/retail
+message respuestaPedido {
+      string codigoSeguimiento = 1;
+}
+
+//Solicitamos un seguimiento
+message solicitudSeguimiento {
+    //id-paquete tipo nombre valor origen destino
+    string codigoSeguimiento = 1; 
+}
+
+//Respuesta del estado
+message respuestaSeguimiento {
+    //id-paquete tipo nombre valor origen destino
+    string estadoPedido = 1; 
+}
+
+message solicitudPaquete {
+    string tipo = 1;
+    string idPaquete = 2;
+}
+
+//respuesta solicitud paquete
+message respuestaPaquete{
+    string idPaquete = 1;
+    int32 codigoSeguimiento = 2;
+    string tipo = 3;
+    int32 valor = 4;
+    string origen = 5;
+    string destino = 6;
+}
+
+//estado del pedido
+message solicitudEstado {
+    string idPaquete = 1;
+    string intentos = 2;
+    string estado = 3;
+    string fecha = 4;
+}
+
+message respuestaEstado {
+    string confirmacion = 1;
+}
