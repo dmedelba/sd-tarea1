@@ -7,7 +7,6 @@ import (
 	"log"
 	"os"
 	"time"
-
 	"google.golang.org/grpc"
 	"github.com/dmedelba/sd-tarea1/PE1/protos"
 )
@@ -32,13 +31,10 @@ func main() {
 	c := protos.NewGreeterClient(conn)
 
 	// Contact the server and print out its response.
-	name := defaultName
-	if len(os.Args) > 1 {
-		name = os.Args[1]
-	}
+
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
-	r, err := c.GetPedido(ctx, &protos.HelloRequest{idPaquete: idPaquete,tipo: tipo, nombre: nombre, valor: valor, origen:origen, destino:destino})
+	r, err := c.GetPedido(ctx, &protos.GetPedido{idPaquete: idPaquete,tipo: tipo, nombre: nombre, valor: valor, origen:origen, destino:destino})
 	if err != nil {
 		log.Fatalf("could not greet: %v", err)
 	}
