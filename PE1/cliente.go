@@ -7,7 +7,6 @@ import (
 	"log"
 	"time"
 	"google.golang.org/grpc"
-	"github.com/dmedel/sd-tarea1/PE1/protos"
 )
 
 const (
