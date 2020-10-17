@@ -21,7 +21,7 @@ type server struct {
 // SayHello implements helloworld.GreeterServer
 func (s *server) GetPedido(ctx context.Context, in *protos.solicitudPedido) (*protos.respuestaPedido, error) {
 	log.Printf("Received: %v", in.GetNombre())
-	return &protos.respuestaPedido{Message: "Hello " + in.GetNombre()}, nil
+	return 
 }
 
 func main() {
