@@ -7,7 +7,7 @@ import (
 	"net"
 
 	"google.golang.org/grpc"
-	pb "github.com/dmedelba/sd-tarea1/PrestigioExpress/ordenCliente/grpc"
+	pb "github.com/dmedelba/sd-tarea1/PrestigioExpress/ordenCliente"
 )
 
 const (
