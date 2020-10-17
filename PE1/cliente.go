@@ -29,16 +29,16 @@ func main() {
 		log.Fatalf("did not connect: %v", err)
 	}
 	defer conn.Close()
-	//c := protos.NewGreeterClient(conn)
+	c := protos.NewGreeterClient(conn)
 
 	// Contact the server and print out its response.
-	/*
+	
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
 	r, err := c.GetPedido(ctx, &protos.solicitudPedido{idPaquete: idPaquete,tipo: tipo, nombre: nombre, valor: valor, origen:origen, destino:destino})
 	if err != nil {
 		log.Fatalf("could not greet: %v", err)
-	}*/
+	}
 
 	log.Printf("Conexión basica")
 }
