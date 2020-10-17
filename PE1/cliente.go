@@ -5,10 +5,9 @@ package main
 import (
 	"context"
 	"log"
-	"os"
 	"time"
 	"google.golang.org/grpc"
-	"github.com/dmedelba/sd-tarea1/PE1/protos"
+	"github.com/dmedelVVJd2aj3ba/sd-tarea1/PE1/protos"
 )
 
 const (
@@ -34,7 +33,7 @@ func main() {
 
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
-	r, err := c.GetPedido(ctx, &protos.GetPedido{idPaquete: idPaquete,tipo: tipo, nombre: nombre, valor: valor, origen:origen, destino:destino})
+	r, err := c.GetPedido(ctx, &protos.solicitudPedido{idPaquete: idPaquete,tipo: tipo, nombre: nombre, valor: valor, origen:origen, destino:destino})
 	if err != nil {
 		log.Fatalf("could not greet: %v", err)
 	}
