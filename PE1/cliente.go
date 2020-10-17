@@ -9,7 +9,7 @@ import (
 	"time"
 
 	"google.golang.org/grpc"
-	"github.com/dmedelba/sd-tarea1/PrestigioExpress/ordenCliente/protos"
+	"github.com/dmedelba/sd-tarea1/PE1/protos"
 )
 
 const (
