@@ -47,7 +47,6 @@ func enviarPedidoPyme(id_pedido int)(int){
 		
 	}
 	
-	log.Printf(linea)
 	return 1
 	//c := pb.NewProtosClient(conn)
 }
