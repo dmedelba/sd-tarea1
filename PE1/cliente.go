@@ -125,8 +125,9 @@ func main() {
 	var tipo_cliente string
 	var accion string
 	var enviado int
-	cantidadPedidosPyme := contarPedidos("./archivos/pymes.csv") - 1 
-	cantidadPedidosRetail := contarPedidos("./archivos/retail.csv") - 1
+	cantidadPedidosPyme := contarPedidos("./archivos/pymes.csv")  
+	cantidadPedidosRetail := contarPedidos("./archivos/retail.csv") 
+	pedidosMax := cantidadPedidosPyme + cantidadPedidosRetail - 2
 
 	log.Printf(strconv.Itoa(cantidadPedidosPyme))
 	log.Printf(strconv.Itoa(cantidadPedidosRetail))
@@ -146,7 +147,8 @@ func main() {
 
 	//Interfaz inicial
 	log.Printf("[Cliente] Ingrese el tiempo entre pedidos:")
-	//fmt.Scanln(&tiempo_pedidos)
+	fmt.Scanln(&tiempo_pedidos)
+	tiempoEspera := strconv.Atoi(tiempo_pedidos)
 
 	log.Printf("[Cliente] Seleccione el tipo de cliente que corresponde: ")
 	log.Printf("1. Pyme")
@@ -157,29 +159,40 @@ func main() {
 	log.Printf("1. Enviar un pedido")
 	log.Printf("2. Consultar estado de un pedido")
 	fmt.Scanln(&accion)
-	
-	switch accion {
-	case "1":
-		//Enviar un pedido , pyme o retail dado por el tipo de cliente	
-		if (tipo_cliente == "1"){
-			enviado = enviarPedido(conn, pedido_pymes, tipo_cliente)
-			if (enviado == 1){
-				log.Printf("Pedido pyme enviado")
+	for true{
+		switch accion {
+		case "1":
+			//Enviar un pedido , pyme o retail dado por el tipo de cliente	
+			if (tipo_cliente == "1" && pedido_pymes < cantidadPedidosPyme){
+				enviado = enviarPedido(conn, pedido_pymes, tipo_cliente)
+				if (enviado == 1){
+					log.Printf("[Cliente] Pedido pyme enviado")
+				}
+				pedido_pymes++;
+			}else{
+				log.Printf("[Cliente] No quedan más pedidos pyme")
 			}
-			pedido_pymes++;
-			total_pedidos++;
-		}else if (tipo_cliente == "2"){
-			enviado = enviarPedido(conn, pedido_retail, tipo_cliente)
-			if (enviado == 1){
-				log.Printf("Pedido retail enviado")
+			if (tipo_cliente == "2" && pedido_retail < cantidadPedidosRetail){
+				enviado = enviarPedido(conn, pedido_retail, tipo_cliente)
+				if (enviado == 1){
+					log.Printf("[Cliente] Pedido retail enviado")
+				}
+				pedido_retail++;
+
+			}else{
+				log.Printf("[Cliente] No quedan más pedidos retail")
 			}
-			pedido_retail++;
-			total_pedidos++;
+			total_pedidos ++
+			if (total_pedidos == pedidosMax){
+				log.Printf("[Cliente] No quedan más pedidos. ")
+				break
+			}
+		case "2":
+			//consultar estado del pedido con el codigo
+			
 		}
-	case "2":
-		//consultar estado del pedido con el codigo
-		
 	}
+	
 	/*
 	// Contact the server and print out its response.
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
