@@ -60,11 +60,12 @@ func enviarPedido(conn *grpc.ClientConn, id_pedido int, tipo_cliente string)(int
 		r := csv.NewReader(bufio.NewReader(csvfile))
 		for i:=0; true; i++{
 			line, err := r.Read()
+			var tipo_pedido string
 			if (i == id_pedido){
 				if (line[5]=="1"){
-					tipo_pedido := "prioritario"
+					tipo_pedido = "prioritario"
 				}else{
-					tipo_pedido := "normal"
+					tipo_pedido = "normal"
 				}
 				ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 				defer cancel()
