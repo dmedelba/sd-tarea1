@@ -6,7 +6,7 @@ import (
 	"log"
 	"net"
 	"google.golang.org/grpc"
-	"github.com/dmedelba/sd-tarea1/PE1/protos"
+	pb "github.com/dmedelba/sd-tarea1/PE1/protos"
 )
 
 const (
@@ -15,11 +15,11 @@ const (
 
 // server is used to implement helloworld.GreeterServer.
 type server struct {
-	protos.UnimplementedGreeterServer
+	pb.UnimplementedGreeterServer
 }
 
 // SayHello implements helloworld.GreeterServer
-func (s *server) GetPedido(ctx context.Context, in *protos.solicitudPedido) (*protos.respuestaPedido, error) {
+func (s *server) GetPedido(ctx context.Context, in *pb.solicitudPedido) (*pb.respuestaPedido, error) {
 	log.Printf("Received: %v", in.GetNombre())
 	return 
 }
