@@ -192,7 +192,7 @@ func main() {
 			
 		}
 		//tiempo entre pedidos
-		time.Sleep(tiempoEspera * time.Second)
+		time.Sleep(time.Duration(tiempoEspera) * time.Second)
 	}
 	
 	/*
