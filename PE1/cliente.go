@@ -199,6 +199,7 @@ func main() {
 			
 		}
 		//tiempo entre pedidos
+		log.Printf("[Cliente] Esperando %d segundos entre pedidos", tiempo_pedidos)
 		time.Sleep(time.Duration(tiempoEspera) * time.Second)
 	}
 	
