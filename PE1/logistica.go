@@ -42,7 +42,7 @@ now := time.Now().String()
 
 //Registros de paquetes en logistica.
 func guardarPaquetesLogisticaPY(in *pb.SolicitudPedidoPyme, codigoSeguimiento string){
-	file,err:=os.Create("./logistica_files/pymes/"+codigoSeguimiento+".csv")
+	file,err:=os.Create("./logistica_files/pyme/"+codigoSeguimiento+".csv")
 	if err!=nil{
 		log.Println(err)
 	}
