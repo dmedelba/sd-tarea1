@@ -30,10 +30,11 @@ func main() {
 	if err != nil {
 		log.Fatalf("Servidor falla al escuchar. ERROR: %v", err)
 	}
+	log.Printf("[Servidor] Esperando comunicación.")
 	s := grpc.NewServer()
 	pb.RegisterProtosServer(s, &server{})
 	if err := s.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)
 	}
-	log.Printf("Servidor OK")
+	
 }
