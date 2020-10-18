@@ -74,6 +74,7 @@ func (s *server) SolicitarPedidoPyme(ctx context.Context, in *pb.SolicitudPedido
 
 	//Registrar el pedido y crear codigo de seguimiento
 	codigo := crearCodigoSeguimientoPyme(in)
+	guardarPaquetesLogisticaPY(in, codigo)
 	return &pb.RespuestaPedido{CodigoSeguimiento: codigo}, nil
 }
 //recibir pedidoRetail
@@ -82,6 +83,7 @@ func (s *server) SolicitarPedidoRetail(ctx context.Context, in *pb.SolicitudPedi
 
 	//Registrar el pedido y crear codigo de seguimiento
 	codigo := crearCodigoSeguimientoRetail(in)
+	guardarPaquetesLogisticaRT(in, codigo)
 	return &pb.RespuestaPedido{CodigoSeguimiento: codigo}, nil
 }
 
