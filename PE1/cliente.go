@@ -121,7 +121,7 @@ func enviarPedido(conn *grpc.ClientConn, id_pedido int, tipo_cliente string)(int
 	//c := pb.NewProtosClient(conn)
 }
 func main() {
-	//var tiempo_pedidos string
+	var tiempo_pedidos string
 	var tipo_cliente string
 	var accion string
 	var enviado int
@@ -148,7 +148,7 @@ func main() {
 	//Interfaz inicial
 	log.Printf("[Cliente] Ingrese el tiempo entre pedidos:")
 	fmt.Scanln(&tiempo_pedidos)
-	tiempoEspera := strconv.Atoi(tiempo_pedidos)
+	tiempoEspera, err := strconv.Atoi(tiempo_pedidos)
 
 	log.Printf("[Cliente] Seleccione el tipo de cliente que corresponde: ")
 	log.Printf("1. Pyme")
