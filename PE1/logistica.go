@@ -17,18 +17,28 @@ const (
 type server struct {
 	pb.UnimplementedProtosServer
 }
-
+func crearCodigoSeguimiento(tipo_cliente string, in *SolicitudPedidoPyme)(string){
+	if (tipo_cliente == "pyme"){
+		codigo := "PY" + in.IdPaquete
+	}else if (tipo_cliente == "retail"){
+		codigo := "RT" + in.IdPaquete 
+	}	
+	return codigo
+}
 //recibir pedidoPyme
 func (s *server) SolicitarPedidoPyme(ctx context.Context, in *pb.SolicitudPedidoPyme) (*pb.RespuestaPedido, error) {
 	log.Printf("[Servidor] Pedido recibido: %+v", in)
+
 	//Registrar el pedido y crear codigo de seguimiento
-	return &pb.RespuestaPedido{CodigoSeguimiento: "CODIGO123"}, nil
+	codigo := crearCodigoSeguimiento("pyme", in)
+	return &pb.RespuestaPedido{CodigoSeguimiento: codigo}, nil
 }
 //recibir pedidoRetail
 func (s *server) SolicitarPedidoRetail(ctx context.Context, in *pb.SolicitudPedidoRetail) (*pb.RespuestaPedido, error) {
 	log.Printf("[Servidor] Pedido recibido: %+v", in)
 	//Registrar el pedido y crear codigo de seguimiento
-	return &pb.RespuestaPedido{CodigoSeguimiento: "CODIGO001"}, nil
+	codigo := crearCodigoSeguimiento("retail", in)
+	return &pb.RespuestaPedido{CodigoSeguimiento: codigo}, nil
 }
 
 func main() {
