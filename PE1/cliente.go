@@ -55,8 +55,6 @@ func enviarPedido(id_pedido int, tipo_cliente string)(int){
 		}
 			//r := csv.NewReader(csvfile)
 		r := csv.NewReader(bufio.NewReader(csvfile))
-		log.Printf("LARGO DEL ARCHIVO")
-		log.Printf(len(r))
 		for i:=0; true; i++{
 			line, err := r.Read()
 			if (i == id_pedido){
@@ -108,7 +106,7 @@ func main() {
 	var pedidos_pymes int
 	var pedidos_retail int 
 	contarPedido := contarPedidos("./archivos/pymes.csv")
-	log.Printf(contarPedido)
+	log.Printf(strconv.Atoi(contarPedido))
 	total_pedidos := 0 
 	pedido_pymes := 1
 	pedido_retail := 1
