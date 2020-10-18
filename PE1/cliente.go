@@ -104,8 +104,9 @@ func main() {
 	var tipo_cliente string
 	var accion string
 	var enviado int
-	contarPedido := contarPedidos("./archivos/pymes.csv")
-	log.Printf(strconv.Itoa(contarPedido))
+	contarPedidos := contarPedidos("./archivos/pymes.csv") +contarPedidos("./archivos/retail.csv") - 2
+	log.Printf(strconv.Itoa(contarPedidos))
+
 	total_pedidos := 0 
 	pedido_pymes := 1
 	pedido_retail := 1
