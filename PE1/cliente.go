@@ -45,8 +45,10 @@ func contarPedidos(nombre_archivo string)(int){
 		}
 	return cantidad_lineas
 }
-//conn *grpc.ClientConn, parametro
-func enviarPedido(id_pedido int, tipo_cliente string)(int){
+
+func enviarPedido(conn *grpc.ClientConn, id_pedido int, tipo_cliente string)(int){
+	//conexión con el servidor 
+	c := comms.NewCommsClient(conn)
 	if (tipo_cliente == "1"){
 		//Se lee csv Pyme
 		csvfile, err := os.Open("./archivos/pymes.csv")
@@ -115,8 +117,8 @@ func main() {
 	var tipo_cliente string
 	var accion string
 	var enviado int
-	cantidadPedidosPyme := contarPedidos("./archivos/pymes.csv") -1 
-	cantidadPedidosRetail : = contarPedidos("./archivos/retail.csv") - 1
+	cantidadPedidosPyme := contarPedidos("./archivos/pymes.csv") - 1 
+	cantidadPedidosRetail := contarPedidos("./archivos/retail.csv") - 1
 
 	log.Printf(strconv.Itoa(cantidadPedidosPyme))
 	log.Printf(strconv.Itoa(cantidadPedidosRetail))
@@ -152,14 +154,14 @@ func main() {
 	case "1":
 		//Enviar un pedido , pyme o retail dado por el tipo de cliente	
 		if (tipo_cliente == "1"){
-			enviado = enviarPedido(pedido_pymes, tipo_cliente)
+			enviado = enviarPedido(conn, pedido_pymes, tipo_cliente)
 			if (enviado == 1){
 				log.Printf("Pedido pyme enviado")
 			}
 			pedido_pymes++;
 			total_pedidos++;
 		}else if (tipo_cliente == "2"){
-			enviado = enviarPedido(pedido_retail, tipo_cliente)
+			enviado = enviarPedido(conn, pedido_retail, tipo_cliente)
 			if (enviado == 1){
 				log.Printf("Pedido retail enviado")
 			}
