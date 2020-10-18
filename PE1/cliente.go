@@ -70,7 +70,7 @@ func enviarPedido(conn *grpc.ClientConn, id_pedido int, tipo_cliente string)(int
 				defer cancel()
 				r, err := c.SolicitarPedidoPyme(ctx, &pb.SolicitudPedidoPyme{
 					IdPaquete:line[0],
-					Tipo: line[5], 
+					Tipo: tipo_pedido, 
 					Nombre: line[1], 
 					Valor: line[2], 
 					Origen:line[3], 
