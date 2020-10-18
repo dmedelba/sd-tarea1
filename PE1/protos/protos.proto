@@ -17,65 +17,65 @@ service Protos {
 // Solicitamos un pedido
 message SolicitudPedidoPyme{
     //id-paquete tipo nombre valor origen destino
-    string idPaquete = 1;
-    string  tipo = 2;
-    string nombre = 3;
-    string valor = 4;
-    string origen = 5;
-    string destino = 6;
+    string IdPaquete = 1;
+    string  Tipo = 2;
+    string Nombre = 3;
+    string Valor = 4;
+    string Origen = 5;
+    string Destino = 6;
 
 }
 
 message SolicitudPedidoRetail{
     //id-paquete tipo nombre valor origen destino
-    string idPaquete = 1;
-    string nombre = 2;
-    string valor = 3;
-    string origen = 4;
-    string destino = 5;
+    string IdPaquete = 1;
+    string Nombre = 2;
+    string Valor = 3;
+    string Origen = 4;
+    string Destino = 5;
 
 }
 
 //respuesta al solicitar un pedido tanto pyme/retail
 message RespuestaPedido {
-      string codigoSeguimiento = 1;
+      string CodigoSeguimiento = 1;
 }
 
 //Solicitamos un seguimiento
 message SolicitudSeguimiento {
     //id-paquete tipo nombre valor origen destino
-    string codigoSeguimiento = 1; 
+    string CodigoSeguimiento = 1; 
 }
 
 //Respuesta del estado
 message RespuestaSeguimiento {
     //id-paquete tipo nombre valor origen destino
-    string estadoPedido = 1; 
+    string EstadoPedido = 1; 
 }
 
 message SolicitudPaquete {
-    string tipo = 1;
-    string idPaquete = 2;
+    string Tipo = 1;
+    string IdPaquete = 2;
 }
 
 //respuesta solicitud paquete
 message RespuestaPaquete{
-    string idPaquete = 1;
-    int32 codigoSeguimiento = 2;
-    string tipo = 3;
-    int32 valor = 4;
-    string origen = 5;
-    string destino = 6;
+    string IdPaquete = 1;
+    int32 CodigoSeguimiento = 2;
+    string Tipo = 3;
+    int32 Valor = 4;
+    string Origen = 5;
+    string Destino = 6;
 }
 
 //estado del pedido
 message SolicitudEstado {
-    string idPaquete = 1;
-    string intentos = 2;
-    string estado = 3;
-    string fecha = 4;
+    string IdPaquete = 1;
+    string Intentos = 2;
+    string Estado = 3;
+    string Fecha = 4;
 }
 
 message RespuestaEstado {
-    string confirmacion = 1;
+    string Confirmacion = 1;
 }
