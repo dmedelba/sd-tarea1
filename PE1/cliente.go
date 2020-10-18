@@ -69,6 +69,7 @@ func enviarPedido(conn *grpc.ClientConn, id_pedido int, tipo_cliente string)(int
 				log.Printf(line[5])
 
 				ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+				defer cancel()
 				r, err := c.SolicitarPedidoPyme(ctx, &pb.SolicitudPedidoPyme{
 					IdPaquete:line[0],
 					Tipo: line[5], 
@@ -79,6 +80,8 @@ func enviarPedido(conn *grpc.ClientConn, id_pedido int, tipo_cliente string)(int
 				if err != nil {
 					log.Fatalf("No se pudo enviar el pedido. ERROR: %v", err)
 				}
+				//respuesta servidor
+				
 				return 1
 			}
 			if err == io.EOF{

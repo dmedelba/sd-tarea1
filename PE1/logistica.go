@@ -18,13 +18,12 @@ type server struct {
 	pb.UnimplementedProtosServer
 }
 
-/*
-// SayHello implements helloworld.GreeterServer
-func (s *server) GetPedido(ctx context.Context, in *pb.solicitudPedido) (*pb.respuestaPedido, error) {
-	log.Printf("Received: %v", in.GetNombre())
-	return 
+
+func (s *server) SolicitarPedidoPyme(ctx context.Context, in *pb.SolicitudPedidoPyme) (*pb.RespuestaPedido, error) {
+	log.Printf("Received: %+v", in)
+	return &pb.RespuestaPedido{CodigoSeguimiento: "CODIGO123"}
 }
-*/
+
 func main() {
 	lis, err := net.Listen("tcp", port)
 	if err != nil {
