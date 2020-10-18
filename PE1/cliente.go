@@ -32,13 +32,16 @@ func enviarPedidoPyme(id_pedido int)(int){
 	}
 	//r := csv.NewReader(csvfile)
 	r := csv.NewReader(bufio.NewReader(csvfile))
-	for (i:=0; true; i++){
+	for i:=0; true; i++{
 		linea, err := r.Read()
-		if (i==id_pedido){
+		if (i == id_pedido){
 			log.Printf(linea)
 		}
 		if err == io.EOF{
 			break
+		}else if err != nil{
+			log.Fatal(err)
+			continue
 		}
 		
 	}
