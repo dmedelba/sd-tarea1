@@ -54,7 +54,7 @@ func main() {
 
 	var tipo_cliente string
 	var accion string
-	var enviado int
+	//var enviado int
 	id_pedido := 0 
 
 	log.Printf("Estableciendo conexión con logistica...")
