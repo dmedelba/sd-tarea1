@@ -37,6 +37,7 @@ func enviarPedidoPyme(id_pedido int)(int){
 		line, err := r.Read()
 		if (i == id_pedido){
 			log.Printf(line[0])
+			return 1
 		}
 		if err == io.EOF{
 			break
@@ -54,7 +55,7 @@ func main() {
 
 	var tipo_cliente string
 	var accion string
-	//var enviado int
+	var enviado int
 	id_pedido := 0 
 
 	log.Printf("Estableciendo conexión con logistica...")
