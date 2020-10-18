@@ -3,19 +3,19 @@ package protos;
 
 
 // The greeting service definition.
-service protos {
+service Protos {
   //funciones 
-  rpc solicitarPedidoPyme(solicitudPedidoPyme) returns (respuestaPedido) {}
-  rpc solicitarPedidoRetail(solicitudPedidoRetail) returns (respuestaPedido) {}
-  rpc obtenerCodigoSeguimiento(solicitudSeguimiento) returns (respuestaSeguimiento) {}
-  rpc solicitarPaquete(solicitudPaquete) returns (respuestaPaquete) {}
-  rpc obtenerEstado(solicitudEstado) returns (respuestaEstado) {}
+  rpc SolicitarPedidoPyme(SolicitudPedidoPyme) returns (RespuestaPedido) {}
+  rpc SolicitarPedidoRetail(SolicitudPedidoRetail) returns (RespuestaPedido) {}
+  rpc ObtenerCodigoSeguimiento(SolicitudSeguimiento) returns (RespuestaSeguimiento) {}
+  rpc SolicitarPaquete(SolicitudPaquete) returns (RespuestaPaquete) {}
+  rpc ObtenerEstado(SolicitudEstado) returns (RespuestaEstado) {}
 }
 
 /*Cliente*/
 
 // Solicitamos un pedido
-message solicitudPedidoPyme{
+message SolicitudPedidoPyme{
     //id-paquete tipo nombre valor origen destino
     string idPaquete = 1;
     string  tipo = 2;
@@ -26,7 +26,7 @@ message solicitudPedidoPyme{
 
 }
 
-message solicitudPedidoRetail{
+message SolicitudPedidoRetail{
     //id-paquete tipo nombre valor origen destino
     string idPaquete = 1;
     string nombre = 2;
@@ -37,29 +37,29 @@ message solicitudPedidoRetail{
 }
 
 //respuesta al solicitar un pedido tanto pyme/retail
-message respuestaPedido {
+message RespuestaPedido {
       string codigoSeguimiento = 1;
 }
 
 //Solicitamos un seguimiento
-message solicitudSeguimiento {
+message SolicitudSeguimiento {
     //id-paquete tipo nombre valor origen destino
     string codigoSeguimiento = 1; 
 }
 
 //Respuesta del estado
-message respuestaSeguimiento {
+message RespuestaSeguimiento {
     //id-paquete tipo nombre valor origen destino
     string estadoPedido = 1; 
 }
 
-message solicitudPaquete {
+message SolicitudPaquete {
     string tipo = 1;
     string idPaquete = 2;
 }
 
 //respuesta solicitud paquete
-message respuestaPaquete{
+message RespuestaPaquete{
     string idPaquete = 1;
     int32 codigoSeguimiento = 2;
     string tipo = 3;
@@ -69,13 +69,13 @@ message respuestaPaquete{
 }
 
 //estado del pedido
-message solicitudEstado {
+message SolicitudEstado {
     string idPaquete = 1;
     string intentos = 2;
     string estado = 3;
     string fecha = 4;
 }
 
-message respuestaEstado {
+message RespuestaEstado {
     string confirmacion = 1;
 }
