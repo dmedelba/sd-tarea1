@@ -25,28 +25,54 @@ const (
     destino = "tienda-b";
 )
 //conn *grpc.ClientConn, parametro
-func enviarPedidoPyme(id_pedido int)(int){
-	//Se lee csv Pyme
-	csvfile, err := os.Open("./archivos/pymes.csv")
-	if err != nil {
-		log.Fatalln("No se pudo leer el archivo", err)
-	}
-	//r := csv.NewReader(csvfile)
-	r := csv.NewReader(bufio.NewReader(csvfile))
-	for i:=0; true; i++{
-		line, err := r.Read()
-		if (i == id_pedido){
-			log.Printf(line[0])
-			return 1
+func enviarPedido(id_pedido int, tipo_cliente string)(int){
+	if (tipo_cliente == "1"){
+		//Se lee csv Pyme
+		csvfile, err := os.Open("./archivos/pymes.csv")
+		if err != nil {
+			log.Fatalln("No se pudo leer el archivo", err)
 		}
-		if err == io.EOF{
-			break
-		}else if err != nil{
-			log.Fatal(err)
-			continue
+			//r := csv.NewReader(csvfile)
+		r := csv.NewReader(bufio.NewReader(csvfile))
+		for i:=0; true; i++{
+			line, err := r.Read()
+			if (i == id_pedido){
+				log.Printf(line[0])
+				return 1
+			}
+			if err == io.EOF{
+				break
+			}else if err != nil{
+				log.Fatal(err)
+				continue
+			}
+			
 		}
-		
+	}else{
+		//Se lee csv Retail
+		csvfile, err := os.Open("./archivos/retail.csv")
+		if err != nil {
+			log.Fatalln("No se pudo leer el archivo", err)
+		}
+		//r := csv.NewReader(csvfile)
+		r := csv.NewReader(bufio.NewReader(csvfile))
+		for i:=0; true; i++{
+			line, err := r.Read()
+			if (i == id_pedido){
+				log.Printf(line[0])
+				return 1
+			}
+			if err == io.EOF{
+				break
+			}else if err != nil{
+				log.Fatal(err)
+				continue
+			}
+			
+		}
 	}
+
+	
 	
 	return 1
 	//c := pb.NewProtosClient(conn)
@@ -84,18 +110,23 @@ func main() {
 		//Cliente pyme
 		if(accion == "1"){
 			//leer csv pyme
-			enviado = enviarPedidoPyme(id_pedido)
+			enviado = enviarPedido(id_pedido, tipo_cliente)
 			if (enviado == 1){
-				log.Printf("OK")
+				log.Printf("OK Pyme")
 			}
 			//enviar pedido
 		}else if (accion == "2"){
 			//consultar estado de un pedido
+			
 		}
 	case "2":
 		//Cliente Retail
 		if(accion == "1"){
 			//enviar pedido retail
+			enviado = enviarPedido(id_pedido, tipo_cliente)
+			if (enviado == 1){
+				log.Printf("OK Retail")
+			}
 		}else if (accion == "2"){
 			//consultar estado de un pedido
 		}
