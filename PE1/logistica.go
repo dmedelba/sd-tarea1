@@ -10,7 +10,7 @@ import (
 )
 
 const (
-	port = ":6969"
+	port = ":7070"
 )
 
 // server is used to implement helloworld.GreeterServer.
@@ -20,7 +20,8 @@ type server struct {
 
 
 func (s *server) SolicitarPedidoPyme(ctx context.Context, in *pb.SolicitudPedidoPyme) (*pb.RespuestaPedido, error) {
-	log.Printf("Received: %+v", in)
+	log.Printf("[Servidor] Pedido recibido: %+v", in)
+	//Registrar el pedido y crear codigo de seguimiento
 	return &pb.RespuestaPedido{CodigoSeguimiento: "CODIGO123"}, nil
 }
 
