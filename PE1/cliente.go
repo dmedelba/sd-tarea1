@@ -85,6 +85,9 @@ func main() {
 		if(accion == "1"){
 			//leer csv pyme
 			enviado = enviarPedidoPyme(id_pedido)
+			if (enviado == 1){
+				log.Printf("OK")
+			}
 			//enviar pedido
 		}else if (accion == "2"){
 			//consultar estado de un pedido
