@@ -5,7 +5,7 @@ import (
 	"context"
 	"log"
 	"os"
-	"csv"
+	"encoding/csv"
 	"time"
 	"net"
 	"google.golang.org/grpc"
