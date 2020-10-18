@@ -44,7 +44,7 @@ now := time.Now().String()
 func guardarPaquetesLogisticaPY(in *pb.SolicitudPedidoPyme, codigoSeguimiento string){
 	file,err:=os.Create("./logistica_files/pymes/"+codigoSeguimiento+".csv")
 	if err!=nil{
-		fmt.Println(err)
+		log.Println(err)
 	}
 	now := time.Now().String()
 	var paquete = [][]string{
@@ -59,7 +59,7 @@ func guardarPaquetesLogisticaPY(in *pb.SolicitudPedidoPyme, codigoSeguimiento st
 func guardarPaquetesLogisticaRT(in *pb.SolicitudPedidoRetail, codigoSeguimiento string){
 	file,err:=os.Create("./logistica_files/retail/"+codigoSeguimiento+".csv")
 	if err!=nil{
-		fmt.Println(err)
+		log.Println(err)
 	}
 	now := time.Now().String()
 	var paquete = [][]string{
