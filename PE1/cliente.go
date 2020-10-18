@@ -149,44 +149,51 @@ func main() {
 	log.Printf("[Cliente] Ingrese el tiempo entre pedidos:")
 	fmt.Scanln(&tiempo_pedidos)
 	tiempoEspera, err := strconv.Atoi(tiempo_pedidos)
-
-	log.Printf("[Cliente] Seleccione el tipo de cliente que corresponde: ")
-	log.Printf("1. Pyme")
-	log.Printf("2. Retail")
-	fmt.Scanln(&tipo_cliente)
-
-	log.Printf("[Cliente] ¿Qué desea hacer ?")
-	log.Printf("1. Enviar un pedido")
-	log.Printf("2. Consultar estado de un pedido")
-	fmt.Scanln(&accion)
 	for true{
+		log.Printf("[Cliente] Seleccione el tipo de cliente que corresponde: ")
+		log.Printf("1. Pyme")
+		log.Printf("2. Retail")
+		fmt.Scanln(&tipo_cliente)
+
+		log.Printf("[Cliente] ¿Qué desea hacer ?")
+		log.Printf("1. Enviar un pedido")
+		log.Printf("2. Consultar estado de un pedido")
+		fmt.Scanln(&accion)
+
 		switch accion {
 		case "1":
-			//Enviar un pedido , pyme o retail dado por el tipo de cliente	
-			if (tipo_cliente == "1" && pedido_pymes < cantidadPedidosPyme){
-				enviado = enviarPedido(conn, pedido_pymes, tipo_cliente)
-				if (enviado == 1){
-					log.Printf("[Cliente] Pedido pyme enviado")
-				}
-				pedido_pymes++;
-			}else{
-				log.Printf("[Cliente] No quedan más pedidos pyme")
-			}
-			if (tipo_cliente == "2" && pedido_retail < cantidadPedidosRetail){
-				enviado = enviarPedido(conn, pedido_retail, tipo_cliente)
-				if (enviado == 1){
-					log.Printf("[Cliente] Pedido retail enviado")
-				}
-				pedido_retail++;
-
-			}else{
-				log.Printf("[Cliente] No quedan más pedidos retail")
-			}
-			total_pedidos ++
+			//Enviar un pedido , pyme o retail dado por el tipo de cliente
 			if (total_pedidos == pedidosMax){
-				log.Printf("[Cliente] No quedan más pedidos. ")
+				log.Printf("[Cliente] No quedan más pedidos disponibles. ")
 				break
 			}
+			
+			switch tipo_cliente {
+			case "1":
+				if (pedido_pymes < pedido_pymes < cantidadPedidosPyme){
+					enviado = enviarPedido(conn, pedido_pymes, tipo_cliente)
+					if (enviado == 1){
+						log.Printf("[Cliente] Pedido pyme enviado")
+					}
+					pedido_pymes++;
+				}else{
+					log.Printf("[Cliente] No quedan más pedidos pyme")
+				}
+			case "2":
+				if (pedido_retail < cantidadPedidosRetail){
+					enviado = enviarPedido(conn, pedido_retail, tipo_cliente)
+					if (enviado == 1){
+						log.Printf("[Cliente] Pedido retail enviado")
+					}
+					pedido_retail++;
+	
+				}else{
+					log.Printf("[Cliente] No quedan más pedidos retail")
+				}
+			}	
+			 
+			total_pedidos ++
+			
 		case "2":
 			//consultar estado del pedido con el codigo
 			
