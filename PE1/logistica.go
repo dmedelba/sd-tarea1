@@ -18,11 +18,17 @@ type server struct {
 	pb.UnimplementedProtosServer
 }
 
-
+//recibir pedidoPyme
 func (s *server) SolicitarPedidoPyme(ctx context.Context, in *pb.SolicitudPedidoPyme) (*pb.RespuestaPedido, error) {
 	log.Printf("[Servidor] Pedido recibido: %+v", in)
 	//Registrar el pedido y crear codigo de seguimiento
 	return &pb.RespuestaPedido{CodigoSeguimiento: "CODIGO123"}, nil
+}
+//recibir pedidoRetail
+func (s *server) SolicitarPedidoRetail(ctx context.Context, in *pb.SolicitudPedidoRetail) (*pb.RespuestaPedido, error) {
+	log.Printf("[Servidor] Pedido recibido: %+v", in)
+	//Registrar el pedido y crear codigo de seguimiento
+	return &pb.RespuestaPedido{CodigoSeguimiento: "CODIGO001"}, nil
 }
 
 func main() {

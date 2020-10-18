@@ -102,7 +102,20 @@ func enviarPedido(conn *grpc.ClientConn, id_pedido int, tipo_cliente string)(int
 		for i:=0; true; i++{
 			line, err := r.Read()
 			if (i == id_pedido){
-				log.Printf(line[0])
+				ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+				defer cancel()
+				r, err := c.SolicitarPedidoRetail(ctx, &pb.SolicitudPedidoRetail{
+					IdPaquete:line[0], 
+					Nombre: line[1], 
+					Valor: line[2], 
+					Origen:line[3], 
+					Destino:line[4]})
+				if err != nil {
+					log.Fatalf("No se pudo enviar el pedido. ERROR: %v", err)
+				}
+				//respuesta servidor
+				log.Printf(r.CodigoSeguimiento)
+				return 1
 				return 1
 			}
 			if err == io.EOF{
@@ -204,7 +217,7 @@ func main() {
 			
 		}
 		//tiempo entre pedidos
-		log.Printf("[Cliente] Esperando " + tiempo_pedidos +" segundos entre pedidos")
+		log.Printf("[Espera] Esperando " + tiempo_pedidos +" segundos para realizar otro pedido")
 		time.Sleep(time.Duration(tiempoEspera) * time.Second)
 	}
 	
