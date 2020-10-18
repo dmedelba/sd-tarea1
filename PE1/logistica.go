@@ -32,17 +32,17 @@ func crearCodigoSeguimientoRetail(in *pb.SolicitudPedidoRetail)(string){
 //recibir pedidoPyme
 func (s *server) SolicitarPedidoPyme(ctx context.Context, in *pb.SolicitudPedidoPyme) (*pb.RespuestaPedido, error) {
 	log.Printf("[Servidor] Pedido recibido: %+v", in)
-	var codigo string
+
 	//Registrar el pedido y crear codigo de seguimiento
-	codigo = crearCodigoSeguimientoPyme(in)
+	codigo := crearCodigoSeguimientoPyme(in)
 	return &pb.RespuestaPedido{CodigoSeguimiento: codigo}, nil
 }
 //recibir pedidoRetail
 func (s *server) SolicitarPedidoRetail(ctx context.Context, in *pb.SolicitudPedidoRetail) (*pb.RespuestaPedido, error) {
 	log.Printf("[Servidor] Pedido recibido: %+v", in)
-	var codigo string
+
 	//Registrar el pedido y crear codigo de seguimiento
-	codigo = crearCodigoSeguimientoRetail(in)
+	codigo := crearCodigoSeguimientoRetail(in)
 	return &pb.RespuestaPedido{CodigoSeguimiento: codigo}, nil
 }
 
