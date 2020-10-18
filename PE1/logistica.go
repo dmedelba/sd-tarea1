@@ -2,7 +2,7 @@
 package main
 
 import (
-	"context"
+	//"context"
 	"log"
 	"net"
 	"google.golang.org/grpc"
@@ -15,7 +15,7 @@ const (
 
 // server is used to implement helloworld.GreeterServer.
 type server struct {
-	pb.UnimplementedGreeterServer
+	pb.UnimplementedProtosServer
 }
 
 /*
