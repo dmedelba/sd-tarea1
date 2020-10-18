@@ -25,6 +25,25 @@ const (
     origen = "tienda-a";
     destino = "tienda-b";
 )
+func contarPedidos(nombre_archivo int)(int){
+	cantidad_lineas := 0
+	csvfile, err := os.Open(nombre_archivo)
+		if err != nil {
+			log.Fatalln("No se pudo leer el archivo", err)
+		}
+		r := csv.NewReader(bufio.NewReader(csvfile))
+		for{
+			line, err := r.Read()
+			if err == io.EOF{
+				break
+			}else if err != nil{
+				log.Fatal(err)
+				continue
+			}
+			cantidad_lineas++
+		}
+	return cantidad_lineas
+}
 //conn *grpc.ClientConn, parametro
 func enviarPedido(id_pedido int, tipo_cliente string)(int){
 	if (tipo_cliente == "1"){
@@ -88,12 +107,13 @@ func main() {
 	var enviado int
 	var pedidos_pymes int
 	var pedidos_retail int 
-
+	contarPedido := contarPedidos("./archivos/pymes.csv")
+	log.Printf(contarPedido)
 	total_pedidos := 0 
 	pedido_pymes := 1
 	pedido_retail := 1
 	log.Printf("Estableciendo conexión con logistica...")
-
+	
 	//Establecemos conexión con logisitica dist70:6969
 	var conn *grpc.ClientConn
 	conn, err := grpc.Dial(puerto, grpc.WithInsecure())
