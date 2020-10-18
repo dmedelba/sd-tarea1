@@ -40,7 +40,7 @@ func guardarPaquetesLogisticaPY(in *pb.SolicitudPedidoPyme, codigoSeguimiento st
 		log.Fatal(err)
 	}
 	defer file.Close()
-	now := time.Time
+	now := time.Now()
 	var paquete [][]string
 	paquete = append(paquete, []string{now, in.IdPaquete, in.Tipo, in.Nombre, in.Valor, in.Origen, in.Destino, codigoSeguimiento})
 	w := csv.NewWriter(file)
@@ -57,7 +57,7 @@ func guardarPaquetesLogisticaRT(in *pb.SolicitudPedidoRetail, codigoSeguimiento 
 		log.Fatal(err)
 	}
 	defer file.Close()
-	now := time.Time
+	now := time.Now()
 	var paquete [][]string
 	paquete = append(paquete, []string{now, in.IdPaquete, "retail", in.Nombre, in.Valor, in.Origen, in.Destino, codigoSeguimiento})
 	w := csv.NewWriter(file)
