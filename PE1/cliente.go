@@ -30,11 +30,14 @@ func enviarPedido(id_pedido int, tipo_cliente string)(int){
 	if (tipo_cliente == "1"){
 		//Se lee csv Pyme
 		csvfile, err := os.Open("./archivos/pymes.csv")
+		
 		if err != nil {
 			log.Fatalln("No se pudo leer el archivo", err)
 		}
 			//r := csv.NewReader(csvfile)
 		r := csv.NewReader(bufio.NewReader(csvfile))
+		log.Printf("LARGO DEL ARCHIVO")
+		log.Printf(len(r))
 		for i:=0; true; i++{
 			line, err := r.Read()
 			if (i == id_pedido){
@@ -83,8 +86,12 @@ func main() {
 	var tipo_cliente string
 	var accion string
 	var enviado int
-	id_pedido := 1 
+	var pedidos_pymes int
+	var pedidos_retail int 
 
+	total_pedidos := 0 
+	pedido_pymes := 1
+	pedido_retail := 1
 	log.Printf("Estableciendo conexión con logistica...")
 
 	//Establecemos conexión con logisitica dist70:6969
@@ -109,11 +116,21 @@ func main() {
 	switch accion {
 	case "1":
 		//Enviar un pedido , pyme o retail dado por el tipo de cliente	
-		enviado = enviarPedido(id_pedido, tipo_cliente)
-		if (enviado == 1){
-			log.Printf("Pedido enviado")
+		if (tipo_cliente == "1"){
+			enviado = enviarPedido(pedido_pymes, tipo_cliente)
+			if (enviado == 1){
+				log.Printf("Pedido pyme enviado")
+			}
+			pedido_pymes++;
+			total_pedidos++;
+		}else if (tipo_cliente == "2"){
+			enviado = enviarPedido(pedido_retail, tipo_cliente)
+			if (enviado == 1){
+				log.Printf("Pedido retail enviado")
+			}
+			pedido_retail++;
+			total_pedidos++;
 		}
-
 	case "2":
 		//consultar estado del pedido
 		
