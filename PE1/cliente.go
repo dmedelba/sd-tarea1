@@ -167,10 +167,10 @@ func main() {
 				log.Printf("[Cliente] No quedan más pedidos disponibles. ")
 				break
 			}
-			
+
 			switch tipo_cliente {
 			case "1":
-				if (pedido_pymes < pedido_pymes < cantidadPedidosPyme){
+				if (pedido_pymes < cantidadPedidosPyme){
 					enviado = enviarPedido(conn, pedido_pymes, tipo_cliente)
 					if (enviado == 1){
 						log.Printf("[Cliente] Pedido pyme enviado")
