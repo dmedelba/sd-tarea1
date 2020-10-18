@@ -37,7 +37,7 @@ func contarPedidos(nombre_archivo string)(int){
 			line, err := r.Read()
 			if err == io.EOF{
 				break
-			}else if err != nil && line==nil{
+			}else if err != nil && line==nil{ //line puesto porque o si no se queja
 				log.Fatal(err)
 				continue
 			}
@@ -104,8 +104,6 @@ func main() {
 	var tipo_cliente string
 	var accion string
 	var enviado int
-	var pedidos_pymes int
-	var pedidos_retail int 
 	contarPedido := contarPedidos("./archivos/pymes.csv")
 	log.Printf(strconv.Itoa(contarPedido))
 	total_pedidos := 0 
