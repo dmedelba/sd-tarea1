@@ -10,7 +10,7 @@ import (
 	"strconv"
 	"context"
 	"log"
-	//"time"
+	"time"
 	"encoding/csv"
 	"google.golang.org/grpc"
 	pb "github.com/dmedelba/sd-tarea1/PE1/protos"
@@ -48,7 +48,7 @@ func contarPedidos(nombre_archivo string)(int){
 
 func enviarPedido(conn *grpc.ClientConn, id_pedido int, tipo_cliente string)(int){
 	//conexión con el servidor 
-	c := comms.NewCommsClient(conn)
+	c := pb.NewProtosClient(conn)
 	if (tipo_cliente == "1"){
 		//Se lee csv Pyme
 		csvfile, err := os.Open("./archivos/pymes.csv")
@@ -61,7 +61,13 @@ func enviarPedido(conn *grpc.ClientConn, id_pedido int, tipo_cliente string)(int
 		for i:=0; true; i++{
 			line, err := r.Read()
 			if (i == id_pedido){
-				log.Printf(line)
+				log.Printf(line[0])
+				log.Printf(line[1])
+				log.Printf(line[2])
+				log.Printf(line[3])
+				log.Printf(line[4])
+				log.Printf(line[5])
+
 				ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 				r, err := c.SolicitarPedidoPyme(ctx, &pb.SolicitudPedidoPyme{
 					IdPaquete:line[0],
