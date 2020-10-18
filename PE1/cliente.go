@@ -34,7 +34,7 @@ func main() {
 	// Contact the server and print out its response.
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
-	r, err := c.solicitarPedidoPyme(ctx, &pb.solicitudPedidoPyme{idPaquete:idPaquete,tipo: tipo, nombre: nombre, valor: valor, origen:origen, destino:destino})
+	r, err := c.SolicitarPedidoPyme(ctx, &pb.solicitudPedidoPyme{idPaquete:idPaquete,tipo: tipo, nombre: nombre, valor: valor, origen:origen, destino:destino})
 	if err != nil {
 		log.Fatalf("could not greet: %v", err)
 	}
