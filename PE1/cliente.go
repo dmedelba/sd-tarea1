@@ -56,7 +56,7 @@ func main() {
 	var tipo_cliente string
 	var accion string
 	var enviado int
-	id_pedido := 0 
+	id_pedido := 1 
 
 	log.Printf("Estableciendo conexión con logistica...")
 
@@ -74,7 +74,7 @@ func main() {
 	log.Printf("2. Retail")
 	fmt.Scanln(&tipo_cliente)
 
-	log.Printf("[Cliente]¿Qué desea hacer ?")
+	log.Printf("[Cliente] ¿Qué desea hacer ?")
 	log.Printf("1. Enviar un pedido")
 	log.Printf("2. Consultar estado de un pedido")
 	fmt.Scanln(&accion)
