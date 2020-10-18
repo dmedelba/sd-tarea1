@@ -8,12 +8,12 @@ import (
 	"bufio"
 	"io"
 	"strconv"
-	//"context"
+	"context"
 	"log"
 	//"time"
 	"encoding/csv"
 	"google.golang.org/grpc"
-	//pb "github.com/dmedelba/sd-tarea1/PE1/protos"
+	pb "github.com/dmedelba/sd-tarea1/PE1/protos"
 )
 
 const (
@@ -59,7 +59,18 @@ func enviarPedido(id_pedido int, tipo_cliente string)(int){
 		for i:=0; true; i++{
 			line, err := r.Read()
 			if (i == id_pedido){
-				log.Printf(line[0])
+				log.Printf(line)
+				ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+				r, err := c.SolicitarPedidoPyme(ctx, &pb.SolicitudPedidoPyme{
+					IdPaquete:line[0],
+					Tipo: line[5], 
+					Nombre: line[1], 
+					Valor: line[2], 
+					Origen:line[3], 
+					Destino:line[4]})
+				if err != nil {
+					log.Fatalf("No se pudo enviar el pedido. ERROR: %v", err)
+				}
 				return 1
 			}
 			if err == io.EOF{
@@ -156,7 +167,7 @@ func main() {
 			total_pedidos++;
 		}
 	case "2":
-		//consultar estado del pedido
+		//consultar estado del pedido con el codigo
 		
 	}
 	/*
