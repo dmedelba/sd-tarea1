@@ -18,20 +18,22 @@ type server struct {
 	pb.UnimplementedGreeterServer
 }
 
+/*
 // SayHello implements helloworld.GreeterServer
 func (s *server) GetPedido(ctx context.Context, in *pb.solicitudPedido) (*pb.respuestaPedido, error) {
 	log.Printf("Received: %v", in.GetNombre())
 	return 
 }
-
+*/
 func main() {
 	lis, err := net.Listen("tcp", port)
 	if err != nil {
 		log.Fatalf("Servidor falla al escuchar. ERROR: %v", err)
 	}
 	s := grpc.NewServer()
-	protos.RegisterProtosServer(s, &server{})
+	pb.RegisterProtosServer(s, &server{})
 	if err := s.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)
 	}
+	log.Printf("Servidor OK")
 }
