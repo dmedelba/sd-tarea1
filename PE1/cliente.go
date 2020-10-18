@@ -25,7 +25,7 @@ const (
 //conn *grpc.ClientConn, parametro
 func enviarPedidoPyme(id_pedido int)(int){
 	//Se lee csv Pyme
-	csvfile, err := os.Open("./archivos/pymes.csv")
+	csv, err := os.Open("./archivos/pymes.csv")
 	if err != nil {
 		log.Fatalln("No se pudo leer el archivo", err)
 	}
@@ -82,7 +82,7 @@ func main() {
 			//consultar estado de un pedido
 		}
 	}
-	
+	/*
 	// Contact the server and print out its response.
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
@@ -91,5 +91,6 @@ func main() {
 		log.Fatalf("could not greet: %v", err)
 	}
 	log.Printf(r)
+	*/
 	log.Printf("Conexión basica")
 }
