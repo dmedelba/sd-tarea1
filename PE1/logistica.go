@@ -33,39 +33,42 @@ func crearCodigoSeguimientoRetail(in *pb.SolicitudPedidoRetail)(string){
 	
 	return codigo
 }
+
+/*
+now := time.Now().String()
+	var paquete [][]string{
+		{now, in.IdPaquete, in.Tipo, in.Nombre, in.Valor, in.Origen, in.Destino, codigoSeguimiento},}
+*/
+
 //Registros de paquetes en logistica.
 func guardarPaquetesLogisticaPY(in *pb.SolicitudPedidoPyme, codigoSeguimiento string){
-	file, err := os.OpenFile("./pedidos_logistica/pedidos.csv", os.O_APPEND|os.O_WRONLY, os.ModeAppend)
-	if err != nil {
-		log.Fatal(err)
+	file,err:=os.Create("./logistica_files/pymes/"+codigoSeguimiento+".csv")
+	if err!=nil{
+		fmt.Println(err)
 	}
-	defer file.Close()
 	now := time.Now().String()
-	var paquete [][]string{
-		{now, in.IdPaquete, in.Tipo, in.Nombre, in.Valor, in.Origen, in.Destino, codigoSeguimiento}}
-	w := csv.NewWriter(file)
-	w.WriteAll(paquete)
-	if err := w.Error(); err != nil {
-		log.Fatal(err)
+	var paquete = [][]string{
+		{now, in.IdPaquete, in.Tipo, in.Nombre, in.Valor, in.Origen, in.Destino, codigoSeguimiento},
 	}
-	log.Printf("Agregado paquete al archivo paquetes.csv")
+	w:=csv.NewWriter(file)
+	w.WriteAll(paquete)
+	file.Close()
+	log.Printf("Agregado paquete pyme al archivo paquetes.csv")
 }
 
 func guardarPaquetesLogisticaRT(in *pb.SolicitudPedidoRetail, codigoSeguimiento string){
-	file, err := os.OpenFile("./pedidos_logistica/pedidos.csv", os.O_APPEND|os.O_WRONLY, os.ModeAppend)
-	if err != nil {
-		log.Fatal(err)
+	file,err:=os.Create("./logistica_files/retail/"+codigoSeguimiento+".csv")
+	if err!=nil{
+		fmt.Println(err)
 	}
-	defer file.Close()
 	now := time.Now().String()
-	var paquete [][]string{
-		{now, in.IdPaquete, "retail", in.Nombre, in.Valor, in.Origen, in.Destino, codigoSeguimiento}}
-	w := csv.NewWriter(file)
-	w.WriteAll(paquete)
-	if err := w.Error(); err != nil {
-		log.Fatal(err)
+	var paquete = [][]string{
+		{now, in.IdPaquete, "retail", in.Nombre, in.Valor, in.Origen, in.Destino, codigoSeguimiento},
 	}
-	log.Printf("Agregado paquete al archivo paquetes.csv")
+	w:=csv.NewWriter(file)
+	w.WriteAll(paquete)
+	file.Close()
+	log.Printf("Agregado paquete retail al archivo paquetes.csv")
 }
 
 //recibir pedidoPyme
