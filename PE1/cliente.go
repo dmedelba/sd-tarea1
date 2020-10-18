@@ -191,6 +191,8 @@ func main() {
 			//consultar estado del pedido con el codigo
 			
 		}
+		//tiempo entre pedidos
+		time.Sleep(tiempoEspera * time.Second)
 	}
 	
 	/*
