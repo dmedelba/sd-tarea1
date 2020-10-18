@@ -25,7 +25,7 @@ const (
     origen = "tienda-a";
     destino = "tienda-b";
 )
-func contarPedidos(nombre_archivo int)(int){
+func contarPedidos(nombre_archivo string)(int){
 	cantidad_lineas := 0
 	csvfile, err := os.Open(nombre_archivo)
 		if err != nil {
