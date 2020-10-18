@@ -61,13 +61,11 @@ func enviarPedido(conn *grpc.ClientConn, id_pedido int, tipo_cliente string)(int
 		for i:=0; true; i++{
 			line, err := r.Read()
 			if (i == id_pedido){
-				log.Printf(line[0])
-				log.Printf(line[1])
-				log.Printf(line[2])
-				log.Printf(line[3])
-				log.Printf(line[4])
-				log.Printf(line[5])
-
+				if (line[5]=="1"){
+					tipo_pedido := "prioritario"
+				}else{
+					tipo_pedido := "normal"
+				}
 				ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 				defer cancel()
 				r, err := c.SolicitarPedidoPyme(ctx, &pb.SolicitudPedidoPyme{
