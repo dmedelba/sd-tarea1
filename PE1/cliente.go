@@ -6,11 +6,12 @@ import (
 	"os"
 	"fmt"
 	"bufio"
-	"context"
+	//"context"
 	"log"
-	"time"
+	//"time"
+	"encoding/csv"
 	"google.golang.org/grpc"
-	pb "github.com/dmedelba/sd-tarea1/PE1/protos"
+	//pb "github.com/dmedelba/sd-tarea1/PE1/protos"
 )
 
 const (
@@ -25,7 +26,7 @@ const (
 //conn *grpc.ClientConn, parametro
 func enviarPedidoPyme(id_pedido int)(int){
 	//Se lee csv Pyme
-	csv, err := os.Open("./archivos/pymes.csv")
+	csvfile, err := os.Open("./archivos/pymes.csv")
 	if err != nil {
 		log.Fatalln("No se pudo leer el archivo", err)
 	}
