@@ -4,6 +4,9 @@ package main
 import (
 	"context"
 	"log"
+	"os"
+	"csv"
+	"time"
 	"net"
 	"google.golang.org/grpc"
 	pb "github.com/dmedelba/sd-tarea1/PE1/protos"
@@ -31,13 +34,14 @@ func crearCodigoSeguimientoRetail(in *pb.SolicitudPedidoRetail)(string){
 	return codigo
 }
 //Registros de paquetes en logistica.
-func guardarPaquetesLogisticaPY(in *SolicitudPedidoPyme, codigoSeguimiento string){
+func guardarPaquetesLogisticaPY(in *pb.SolicitudPedidoPyme, codigoSeguimiento string){
 	file, err := os.OpenFile("./pedidos_logistica/pedidos.csv", os.O_APPEND|os.O_WRONLY, os.ModeAppend)
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer file.Close()
 	now := time.Now()
+	var paquete [][]string
 	paquete = append(paquete, []string{now, in.IdPaquete, in.Tipo, in.Nombre, in.Valor, in.Origen, in.Destino, codigoSeguimiento})
 	w := csv.NewWriter(file)
 	w.WriteAll(paquete)
@@ -47,13 +51,14 @@ func guardarPaquetesLogisticaPY(in *SolicitudPedidoPyme, codigoSeguimiento strin
 	log.Printf("Agregado paquete al archivo paquetes.csv")
 }
 
-func guardarPaquetesLogisticaRT(in *SolicitudPedidoRetail, codigoSeguimiento string){
+func guardarPaquetesLogisticaRT(in *pb.SolicitudPedidoRetail, codigoSeguimiento string){
 	file, err := os.OpenFile("./pedidos_logistica/pedidos.csv", os.O_APPEND|os.O_WRONLY, os.ModeAppend)
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer file.Close()
 	now := time.Now()
+	var paquete [][]string
 	paquete = append(paquete, []string{now, in.IdPaquete, "retail", in.Nombre, in.Valor, in.Origen, in.Destino, codigoSeguimiento})
 	w := csv.NewWriter(file)
 	w.WriteAll(paquete)
