@@ -17,7 +17,7 @@ const (
 type server struct {
 	pb.UnimplementedProtosServer
 }
-func crearCodigoSeguimiento(tipo_cliente string, in *SolicitarPedidoPyme)(string){
+func crearCodigoSeguimiento(tipo_cliente string, in *pb.SolicitudPedidoPyme)(string){
 	var codigo string
 	if (tipo_cliente == "pyme"){
 		codigo = "PY" + in.IdPaquete
