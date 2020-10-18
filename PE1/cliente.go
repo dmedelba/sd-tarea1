@@ -159,7 +159,7 @@ func main() {
 		if (tipo_cliente == "0"){
 			break
 		}
-		
+
 		log.Printf("[Cliente] ¿Qué desea hacer ?")
 		log.Printf("1. Enviar un pedido")
 		log.Printf("2. Consultar estado de un pedido")
@@ -204,7 +204,7 @@ func main() {
 			
 		}
 		//tiempo entre pedidos
-		log.Printf("[Cliente] Esperando %d segundos entre pedidos", tiempo_pedidos)
+		log.Printf("[Cliente] Esperando %+d segundos entre pedidos", tiempo_pedidos)
 		time.Sleep(time.Duration(tiempoEspera) * time.Second)
 	}
 	
@@ -218,5 +218,5 @@ func main() {
 	}
 	log.Printf(r)
 	*/
-	log.Printf("Conexión basica")
+	log.Printf("Conexión finalizada")
 }
