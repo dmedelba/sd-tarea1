@@ -50,7 +50,7 @@ func enviarPedido(id_pedido int, tipo_cliente string)(int){
 	if (tipo_cliente == "1"){
 		//Se lee csv Pyme
 		csvfile, err := os.Open("./archivos/pymes.csv")
-		
+		log.Printf("Pyme leido")
 		if err != nil {
 			log.Fatalln("No se pudo leer el archivo", err)
 		}
