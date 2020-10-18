@@ -80,7 +80,7 @@ func enviarPedido(conn *grpc.ClientConn, id_pedido int, tipo_cliente string)(int
 					log.Fatalf("No se pudo enviar el pedido. ERROR: %v", err)
 				}
 				//respuesta servidor
-				log.Printf("[Servidor] Codigo de seguimiento:" + r.CodigoSeguimiento)
+				log.Printf("[Servidor] Codigo de seguimiento: " + r.CodigoSeguimiento)
 				return 1
 			}
 			if err == io.EOF{
@@ -192,7 +192,7 @@ func main() {
 				if (pedido_pymes < cantidadPedidosPyme){
 					enviado = enviarPedido(conn, pedido_pymes, tipo_cliente)
 					if (enviado == 1){
-						log.Printf("[Cliente] Pedido pyme enviado")
+						log.Printf("---------------------------------")
 					}
 					pedido_pymes++;
 				}else{
@@ -201,8 +201,8 @@ func main() {
 			case "2":
 				if (pedido_retail < cantidadPedidosRetail){
 					enviado = enviarPedido(conn, pedido_retail, tipo_cliente)
-					if (enviado == 1){
-						log.Printf("[Cliente] Pedido retail enviado")
+					if (enviado == 1){ 
+						log.Printf("---------------------------------")
 					}
 					pedido_retail++;
 	
