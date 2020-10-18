@@ -37,7 +37,7 @@ func contarPedidos(nombre_archivo string)(int){
 			line, err := r.Read()
 			if err == io.EOF{
 				break
-			}else if err != nil{
+			}else if err != nil && line!={
 				log.Fatal(err)
 				continue
 			}
