@@ -100,12 +100,15 @@ func enviarPedido(id_pedido int, tipo_cliente string)(int){
 	//c := pb.NewProtosClient(conn)
 }
 func main() {
-
+	//var tiempo_pedidos string
 	var tipo_cliente string
 	var accion string
 	var enviado int
-	contarPedidos := contarPedidos("./archivos/pymes.csv") +contarPedidos("./archivos/retail.csv") - 2
-	log.Printf(strconv.Itoa(contarPedidos))
+	cantidadPedidosPyme := contarPedidos("./archivos/pymes.csv") -1 
+	cantidadPedidosRetail : = contarPedidos("./archivos/retail.csv") - 1
+
+	log.Printf(strconv.Itoa(cantidadPedidosPyme))
+	log.Printf(strconv.Itoa(cantidadPedidosRetail))
 
 	total_pedidos := 0 
 	pedido_pymes := 1
@@ -121,6 +124,9 @@ func main() {
 	defer conn.Close()
 
 	//Interfaz inicial
+	log.Printf("[Cliente] Ingrese el tiempo entre pedidos:")
+	//fmt.Scanln(&tiempo_pedidos)
+
 	log.Printf("[Cliente] Seleccione el tipo de cliente que corresponde: ")
 	log.Printf("1. Pyme")
 	log.Printf("2. Retail")

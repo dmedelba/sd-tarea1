@@ -27,10 +27,10 @@ func (s *server) GetPedido(ctx context.Context, in *pb.solicitudPedido) (*pb.res
 func main() {
 	lis, err := net.Listen("tcp", port)
 	if err != nil {
-		log.Fatalf("failed to listen: %v", err)
+		log.Fatalf("Servidor falla al escuchar. ERROR: %v", err)
 	}
 	s := grpc.NewServer()
-	protos.RegisterGreeterServer(s, &server{})
+	protos.RegisterProtosServer(s, &server{})
 	if err := s.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)
 	}
