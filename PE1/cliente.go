@@ -6,6 +6,7 @@ import (
 	"os"
 	"fmt"
 	"bufio"
+	"io"
 	//"context"
 	"log"
 	//"time"
@@ -33,9 +34,9 @@ func enviarPedidoPyme(id_pedido int)(int){
 	//r := csv.NewReader(csvfile)
 	r := csv.NewReader(bufio.NewReader(csvfile))
 	for i:=0; true; i++{
-		linea, err := r.Read()
+		line, err := r.Read()
 		if (i == id_pedido){
-			log.Printf(linea)
+			log.Printf(line[0])
 		}
 		if err == io.EOF{
 			break
