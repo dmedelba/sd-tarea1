@@ -32,7 +32,17 @@ func enviarPedidoPyme(id_pedido int)(int){
 	}
 	//r := csv.NewReader(csvfile)
 	r := csv.NewReader(bufio.NewReader(csvfile))
-	linea := r.Read(id_pedido)
+	for (i:=0; true; i++){
+		linea, err := r.Read()
+		if (i==id_pedido){
+			log.Printf(linea)
+		}
+		if err == io.EOF{
+			break
+		}
+		
+	}
+	
 	log.Printf(linea)
 	return 1
 	//c := pb.NewProtosClient(conn)
