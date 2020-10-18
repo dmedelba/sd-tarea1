@@ -16,6 +16,7 @@ import (
 )
 
 const (
+	cantidad_pedidos = 60;
 	puerto     = "dist70:6969"
 	idPaquete = "1";
     tipo = "pyme";
@@ -105,31 +106,17 @@ func main() {
 	log.Printf("2. Consultar estado de un pedido")
 	fmt.Scanln(&accion)
 	
-	switch tipo_cliente {
+	switch accion {
 	case "1":
-		//Cliente pyme
-		if(accion == "1"){
-			//leer csv pyme
-			enviado = enviarPedido(id_pedido, tipo_cliente)
-			if (enviado == 1){
-				log.Printf("OK Pyme")
-			}
-			//enviar pedido
-		}else if (accion == "2"){
-			//consultar estado de un pedido
-			
+		//Enviar un pedido , pyme o retail dado por el tipo de cliente	
+		enviado = enviarPedido(id_pedido, tipo_cliente)
+		if (enviado == 1){
+			log.Printf("Pedido enviado")
 		}
+
 	case "2":
-		//Cliente Retail
-		if(accion == "1"){
-			//enviar pedido retail
-			enviado = enviarPedido(id_pedido, tipo_cliente)
-			if (enviado == 1){
-				log.Printf("OK Retail")
-			}
-		}else if (accion == "2"){
-			//consultar estado de un pedido
-		}
+		//consultar estado del pedido
+		
 	}
 	/*
 	// Contact the server and print out its response.
