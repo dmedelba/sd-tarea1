@@ -41,8 +41,8 @@ func guardarPaquetesLogisticaPY(in *pb.SolicitudPedidoPyme, codigoSeguimiento st
 	}
 	defer file.Close()
 	now := time.Now().String()
-	var paquete [][]string
-	paquete = append(paquete, []string{now, in.IdPaquete, in.Tipo, in.Nombre, in.Valor, in.Origen, in.Destino, codigoSeguimiento})
+	var paquete [][]string{
+		{now, in.IdPaquete, in.Tipo, in.Nombre, in.Valor, in.Origen, in.Destino, codigoSeguimiento}}
 	w := csv.NewWriter(file)
 	w.WriteAll(paquete)
 	if err := w.Error(); err != nil {
@@ -58,8 +58,8 @@ func guardarPaquetesLogisticaRT(in *pb.SolicitudPedidoRetail, codigoSeguimiento 
 	}
 	defer file.Close()
 	now := time.Now().String()
-	var paquete [][]string
-	paquete = append(paquete, []string{now, in.IdPaquete, "retail", in.Nombre, in.Valor, in.Origen, in.Destino, codigoSeguimiento})
+	var paquete [][]string{
+		{now, in.IdPaquete, "retail", in.Nombre, in.Valor, in.Origen, in.Destino, codigoSeguimiento}}
 	w := csv.NewWriter(file)
 	w.WriteAll(paquete)
 	if err := w.Error(); err != nil {
