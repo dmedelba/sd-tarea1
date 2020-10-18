@@ -80,7 +80,7 @@ func enviarPedido(conn *grpc.ClientConn, id_pedido int, tipo_cliente string)(int
 					log.Fatalf("No se pudo enviar el pedido. ERROR: %v", err)
 				}
 				//respuesta servidor
-				log.Printf(r.CodigoSeguimiento)
+				log.Printf("[Servidor] Codigo de seguimiento:" + r.CodigoSeguimiento)
 				return 1
 			}
 			if err == io.EOF{
@@ -133,6 +133,7 @@ func enviarPedido(conn *grpc.ClientConn, id_pedido int, tipo_cliente string)(int
 	return 1
 	//c := pb.NewProtosClient(conn)
 }
+
 func main() {
 	var tiempo_pedidos string
 	var tipo_cliente string
