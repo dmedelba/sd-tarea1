@@ -107,7 +107,7 @@ func main() {
 	var pedidos_pymes int
 	var pedidos_retail int 
 	contarPedido := contarPedidos("./archivos/pymes.csv")
-	log.Printf(strconv.Atoi(contarPedido))
+	log.Printf(strconv.Itoa(contarPedido))
 	total_pedidos := 0 
 	pedido_pymes := 1
 	pedido_retail := 1
