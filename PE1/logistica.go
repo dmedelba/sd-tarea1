@@ -21,7 +21,7 @@ type server struct {
 
 func (s *server) SolicitarPedidoPyme(ctx context.Context, in *pb.SolicitudPedidoPyme) (*pb.RespuestaPedido, error) {
 	log.Printf("Received: %+v", in)
-	return &pb.RespuestaPedido{CodigoSeguimiento: "CODIGO123"}
+	return &pb.RespuestaPedido{CodigoSeguimiento: "CODIGO123"}, nil
 }
 
 func main() {
