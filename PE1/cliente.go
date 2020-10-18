@@ -153,8 +153,13 @@ func main() {
 		log.Printf("[Cliente] Seleccione el tipo de cliente que corresponde: ")
 		log.Printf("1. Pyme")
 		log.Printf("2. Retail")
+		log.Printf("0. Para finalizar conexión")
 		fmt.Scanln(&tipo_cliente)
 
+		if (tipo_cliente == "0"){
+			break
+		}
+		
 		log.Printf("[Cliente] ¿Qué desea hacer ?")
 		log.Printf("1. Enviar un pedido")
 		log.Printf("2. Consultar estado de un pedido")
