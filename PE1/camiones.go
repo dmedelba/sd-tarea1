@@ -92,6 +92,7 @@ func entregarpedidos(camioncito *camion, tiempoEspera1 int, tiempoEspera2 int) {
 				if (rand.Intn(100) < 80) && (intentoPaquete1 < 3) && (camioncito.Paquete1.Fechaentrega == "0") {
 					time.Sleep(time.Duration(tiempoEspera1) * time.Second)
 					camioncito.Paquete1.Fechaentrega = time.Now().String()
+					camioncito.Estado = 1
 				} else {
 					time.Sleep(time.Duration(tiempoEspera1) * time.Second)
 					sumarintento(camioncito.Paquete1.Intentos)
@@ -100,6 +101,7 @@ func entregarpedidos(camioncito *camion, tiempoEspera1 int, tiempoEspera2 int) {
 				if (rand.Intn(100) < 80) && (intentoPaquete2 < 3) && (camioncito.Paquete2.Fechaentrega == "0") {
 					time.Sleep(time.Duration(tiempoEspera1) * time.Second)
 					camioncito.Paquete2.Fechaentrega = time.Now().String()
+					camioncito.Estado = 1
 				} else {
 					time.Sleep(time.Duration(tiempoEspera1) * time.Second)
 					sumarintento(camioncito.Paquete2.Intentos)
@@ -136,25 +138,20 @@ func main() {
 	tiempoEspera1, _ := strconv.Atoi(tiempo_pedidos)
 	tiempoEspera2, _ := strconv.Atoi(tiempo_pedidos2)
 
-	agregarpaquetes(conn, camion1)
-
 	//cargamos camion 1
-	//agregarpaquetes(conn, camion1) // AGREGO PAQUETE 1 (ESTADO = 1) (MEDIO)
-	//VOLVER A PREGUNTAR SI QUEDAN PAQUETES EN COLA
-	//agregarpaquetes(conn, camion1) // AGREGO PAQUETE 2 (ESTADO = 2) (LLENO)
+	agregarpaquetes(conn, camion1) // AGREGO PAQUETE 1 (ESTADO = 1) (MEDIO)
+	agregarpaquetes(conn, camion1) // AGREGO PAQUETE 2 (ESTADO = 2) (LLENO)
 
-	// IF QUEDAN PAQUETES EN LA COLA RETAIL;
-	// SI NO PREGUNTAR SI QUEDAN PAQUETES PRIORITARIOS EN LA COLA PYMES;
 	//cargamos camion 2
 	//agregarpaquetes(conn, camion2) // AGREGO PAQUETE 1 (ESTADO = 1) (MEDIO)
-	//VOLVER A PREGUNTAR SI QUEDAN PAQUETES EN COLA
 	//agregarpaquetes(conn, camion2) // AGREGO PAQUETE 2 (ESTADO = 2) (LLENO)
 
-	// IF QUEDAN PAQUETES EN LA COLA PYMES
 	//cargamos camion 3
 	//agregarpaquetes(conn, camion3) // AGREGO PAQUETE 1 (ESTADO = 1) (MEDIO)
 	//agregarpaquetes(conn, camion3) // AGREGO PAQUETE 2 (ESTADO = 2) (LLENO)
 
 	// IMPLEMENTAR UNA FUNCION QUE HAGA EL PROCESO DE REPARTO (LO DIFICIL ESTA AQUI)
+	entregarpedidos(camion1, tiempoEspera1, tiempoEspera2)
+	log.Printf("estado camion 1 %v", camion1.Estado)
 
 }
