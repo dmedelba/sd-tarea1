@@ -41,6 +41,9 @@ func agregarpaquetes(conn *grpc.ClientConn, camioncito *camion ) {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	r, err := c.SolicitarPaquete(ctx, &pb.SolicitudPaquete{Tipo: camioncito.Tipo})
 	defer cancel()
+	if err != nil {
+		log.Fatalf("No se pudo agregar el paquete. ERROR: %v", err)
+	}
 	log.Printf(r.IdPaquete)
 	log.Printf(r.CodigoSeguimiento) 
 	log.Printf(r.Tipo) 
@@ -72,8 +75,8 @@ func main() {
 	var tiempo_pedidos string
 	// se define cada camion (2 retail y 1 pyme)
 	camion1 := &camion{Tipo: "Retail", Estado: 0}
-	camion2 := &camion{Tipo: "Retail", Estado: 0}
-	camion3 := &camion{Tipo: "Pyme", Estado: 0}
+	//camion2 := &camion{Tipo: "Retail", Estado: 0}
+	//camion3 := &camion{Tipo: "Pyme", Estado: 0}
 
 	//Establecemos conexión con logisitica dist70:6970
 	var conn *grpc.ClientConn
