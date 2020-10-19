@@ -122,6 +122,7 @@ func (s *server) ObtenerCodigoSeguimiento(ctx context.Context, in *pb.SolicitudS
 		if (line[1]==in.CodigoSeguimiento){
 			csvFile.Close()
 			estadoPedido = line[5]
+			break
 		}
 	}
 	return &pb.RespuestaSeguimiento{EstadoPedido:estadoPedido}, nil
