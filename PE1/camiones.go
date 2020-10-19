@@ -73,7 +73,7 @@ func sumarintento(cantidad_actual string) string {
 	return strconv.Itoa(intente + 1)
 }
 
-func entregarpedidos(camioncito *camion, tiempo_pedidos int, tiempo_pedidos2 int) {
+func entregarpedidos(camioncito *camion, tiempoEspera1 int, tiempoEspera2 int) {
 	//se busca cual de los dos paquetes se entregara primero en caso de estar lleno
 	// defino variables auxiliares
 	var val1 int
@@ -90,18 +90,18 @@ func entregarpedidos(camioncito *camion, tiempo_pedidos int, tiempo_pedidos2 int
 
 			if val1 > val2 {
 				if (rand.Intn(100) < 80) && (intentoPaquete1 < 3) && (camioncito.Paquete1.Fechaentrega == "0") {
-					time.Sleep(time.Duration(tiempo_pedidos) * time.Second)
+					time.Sleep(time.Duration(tiempoEspera1) * time.Second)
 					camioncito.Paquete1.Fechaentrega = time.Now().String()
 				} else {
-					time.Sleep(time.Duration(tiempo_pedidos) * time.Second)
+					time.Sleep(time.Duration(tiempoEspera1) * time.Second)
 					sumarintento(camioncito.Paquete1.Intentos)
 				}
 			} else {
 				if (rand.Intn(100) < 80) && (intentoPaquete2 < 3) && (camioncito.Paquete2.Fechaentrega == "0") {
-					time.Sleep(time.Duration(tiempo_pedidos) * time.Second)
+					time.Sleep(time.Duration(tiempoEspera1) * time.Second)
 					camioncito.Paquete2.Fechaentrega = time.Now().String()
 				} else {
-					time.Sleep(time.Duration(tiempo_pedidos) * time.Second)
+					time.Sleep(time.Duration(tiempoEspera1) * time.Second)
 					sumarintento(camioncito.Paquete2.Intentos)
 				}
 			}
