@@ -20,6 +20,11 @@ const (
 type server struct {
 	pb.UnimplementedProtosServer
 }
+/*
+type colas struct { 
+	var numeros1 []i
+}
+*/
 
 //Crear codigos de seguimiento unicos.
 func crearCodigoSeguimientoPyme(in *pb.SolicitudPedidoPyme)(string){
@@ -34,13 +39,9 @@ func crearCodigoSeguimientoRetail(in *pb.SolicitudPedidoRetail)(string){
 	return codigo
 }
 
-/*
-now := time.Now().String()
-	var paquete [][]string{
-		{now, in.IdPaquete, in.Tipo, in.Nombre, in.Valor, in.Origen, in.Destino, codigoSeguimiento},}
-*/
 
-//Registros de paquetes en logistica.
+//Registros de paquetes en logistica, solicitado en enunciado.
+//hacer una lista con estos archivos
 func guardarPaquetesLogisticaPY(in *pb.SolicitudPedidoPyme, codigoSeguimiento string){
 	file,err:=os.Create("./logistica_files/pyme/"+codigoSeguimiento+".csv")
 	if err!=nil{
@@ -53,6 +54,21 @@ func guardarPaquetesLogisticaPY(in *pb.SolicitudPedidoPyme, codigoSeguimiento st
 	w:=csv.NewWriter(file)
 	w.WriteAll(paquete)
 	file.Close()
+
+	//guardamos el paquete en nuestro archivo general
+	archivo, error := os.OpenFile("./logistica_files/pyme/pedidosGeneral.csv", os.O_APPEND|os.O_WRONLY, os.ModeAppend)
+	if error != nil {
+		log.Fatal(error)
+	}
+	defer archivo.Close()
+
+	var paqueteG [][]string
+	intentos := "0"
+	estado := "En Bodega"
+	paqueteG = append(paqueteG, []string{in.IdPaquete, codigoSeguimiento, in.Tipo, in.Valor, intentos, estado})
+	ww := csv.NewWriter(archivo)
+	ww.WriteAll(data)
+	archivo.Close()
 }
 
 func guardarPaquetesLogisticaRT(in *pb.SolicitudPedidoRetail, codigoSeguimiento string){
@@ -69,7 +85,24 @@ func guardarPaquetesLogisticaRT(in *pb.SolicitudPedidoRetail, codigoSeguimiento 
 	w.WriteAll(paquete)
 	file.Close()
 
+	//guardamos el paquete en nuestro archivo general
+	archivo, error := os.OpenFile("./logistica_files/pyme/pedidosGeneral.csv", os.O_APPEND|os.O_WRONLY, os.ModeAppend)
+	if error != nil {
+		log.Fatal(error)
+	}
+	defer archivo.Close()
+
+	var paqueteG [][]string
+	intentos := "0"
+	estado := "En Bodega"
+	paqueteG = append(paqueteG, []string{in.IdPaquete, codigoSeguimiento, tipo, in.Valor, intentos, estado})
+	ww := csv.NewWriter(archivo)
+	ww.WriteAll(data)
+	archivo.Close()
+
 }
+
+//Guardamos los pedidos en un archivo general para obtener su estado e ir actualizando
 
 //recibir pedidoPyme
 func (s *server) SolicitarPedidoPyme(ctx context.Context, in *pb.SolicitudPedidoPyme) (*pb.RespuestaPedido, error) {
