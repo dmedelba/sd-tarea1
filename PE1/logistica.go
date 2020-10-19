@@ -160,7 +160,7 @@ func (s *server) SolicitarPedidoRetail(ctx context.Context, in *pb.SolicitudPedi
 }
 
 func main() {
-
+	go conexionCamiones()
 
 	lis, err := net.Listen("tcp", portCliente)
 	if err != nil {
@@ -173,7 +173,6 @@ func main() {
 		log.Fatalf("failed to serve: %v", err)
 	}
 
-	go conexionCamiones()
 	
 
 	
