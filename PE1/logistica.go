@@ -15,7 +15,8 @@ import (
 )
 
 const (
-	port = ":7071"
+	portCliente = ":7071"
+	portCamion = ":6970"
 )
 
 // server is used to implement helloworld.GreeterServer.
@@ -148,9 +149,9 @@ func (s *server) SolicitarPedidoRetail(ctx context.Context, in *pb.SolicitudPedi
 }
 
 func main() {
-	lis, err := net.Listen("tcp", port)
+	lis, err := net.Listen("tcp", portCliente)
 	if err != nil {
-		log.Fatalf("Servidor falla al escuchar. ERROR: %v", err)
+		log.Fatalf("Servidor falla al escuchar cliente. ERROR: %v", err)
 	}
 	log.Printf("[Servidor] Esperando comunicación.")
 	s := grpc.NewServer()
@@ -158,5 +159,17 @@ func main() {
 	if err := s.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)
 	}
+
+	lis, err := net.Listen("tcp", portCamion)
+	if err != nil {
+		log.Fatalf("Servidor falla al escuchar camiones. ERROR: %v", err)
+	}
+	log.Printf("[Servidor] Esperando comunicación camiones.")
+	s := grpc.NewServer()
+	pb.RegisterProtosServer(s, &server{})
+	if err := s.Serve(lis); err != nil {
+		log.Fatalf("failed to serve: %v", err)
+	}
+
 	
 }
