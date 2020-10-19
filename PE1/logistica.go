@@ -53,7 +53,6 @@ func guardarPaquetesLogisticaPY(in *pb.SolicitudPedidoPyme, codigoSeguimiento st
 	w:=csv.NewWriter(file)
 	w.WriteAll(paquete)
 	file.Close()
-	log.Printf("Agregado paquete pyme al archivo paquetes.csv")
 }
 
 func guardarPaquetesLogisticaRT(in *pb.SolicitudPedidoRetail, codigoSeguimiento string){
@@ -62,13 +61,14 @@ func guardarPaquetesLogisticaRT(in *pb.SolicitudPedidoRetail, codigoSeguimiento 
 		log.Println(err)
 	}
 	now := time.Now().String()
+	tipo := "retail"
 	var paquete = [][]string{
-		{now, in.IdPaquete, "retail", in.Nombre, in.Valor, in.Origen, in.Destino, codigoSeguimiento},
+		{now, in.IdPaquete, tipo, in.Nombre, in.Valor, in.Origen, in.Destino, codigoSeguimiento},
 	}
 	w:=csv.NewWriter(file)
 	w.WriteAll(paquete)
 	file.Close()
-	log.Printf("Agregado paquete retail al archivo paquetes.csv")
+
 }
 
 //recibir pedidoPyme

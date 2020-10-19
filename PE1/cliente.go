@@ -114,8 +114,7 @@ func enviarPedido(conn *grpc.ClientConn, id_pedido int, tipo_cliente string)(int
 					log.Fatalf("No se pudo enviar el pedido. ERROR: %v", err)
 				}
 				//respuesta servidor
-				log.Printf(r.CodigoSeguimiento)
-				return 1
+				log.Printf("[Servidor] Codigo de seguimiento: " + r.CodigoSeguimiento)
 				return 1
 			}
 			if err == io.EOF{
