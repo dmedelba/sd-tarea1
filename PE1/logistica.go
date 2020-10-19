@@ -160,18 +160,20 @@ func (s *server) SolicitarPedidoRetail(ctx context.Context, in *pb.SolicitudPedi
 }
 
 func main() {
+
+	go conexionCamiones()
+
 	lis, err := net.Listen("tcp", portCliente)
 	if err != nil {
 		log.Fatalf("Servidor falla al escuchar cliente. ERROR: %v", err)
 	}
-	log.Printf("[Servidor] Esperando comunicación.")
+	log.Printf("[Servidor] Esperando comunicación cliente.")
 	s := grpc.NewServer()
 	pb.RegisterProtosServer(s, &server{})
 	if err := s.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)
 	}
 
-	go conexionCamiones()
 	
 
 	
