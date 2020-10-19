@@ -160,12 +160,12 @@ func main() {
 		log.Fatalf("failed to serve: %v", err)
 	}
 
-	lis, err := net.Listen("tcp", portCamion)
+	lis, err = net.Listen("tcp", portCamion)
 	if err != nil {
 		log.Fatalf("Servidor falla al escuchar camiones. ERROR: %v", err)
 	}
 	log.Printf("[Servidor] Esperando comunicación camiones.")
-	s := grpc.NewServer()
+	s = grpc.NewServer()
 	pb.RegisterProtosServer(s, &server{})
 	if err := s.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)
