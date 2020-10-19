@@ -141,6 +141,7 @@ func main() {
 	//cargamos camion 1
 	agregarpaquetes(conn, camion1) // AGREGO PAQUETE 1 (ESTADO = 1) (MEDIO)
 	agregarpaquetes(conn, camion1) // AGREGO PAQUETE 2 (ESTADO = 2) (LLENO)
+	log.Printf("agregue los paquetes a c1")
 
 	//cargamos camion 2
 	//agregarpaquetes(conn, camion2) // AGREGO PAQUETE 1 (ESTADO = 1) (MEDIO)
