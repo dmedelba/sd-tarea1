@@ -1,15 +1,15 @@
 package main
 
 import (
-	"os"
+	//"os"
 	"fmt"
-	"bufio"
-	"io"
+	//"bufio"
+	//"io"
 	"strconv"
 	"context"
 	"log"
 	"time"
-	"encoding/csv"
+	//"encoding/csv"
 	"google.golang.org/grpc"
 	pb "github.com/dmedelba/sd-tarea1/PE1/protos"
 )
@@ -59,9 +59,9 @@ func agregarpaquetes(conn *grpc.ClientConn, camioncito *camion ) {
 func main() {
 	var tiempo_pedidos string
 	// se define cada camion (2 retail y 1 pyme)
-	camion1 = &camion{Tipo: "Retail", Estado: 0}
-	camion2 = &camion{Tipo: "Retail", Estado: 0}
-	camion3 = &camion{Tipo: "Pyme", Estado: 0}
+	camion1 := &camion{Tipo: "Retail", Estado: 0}
+	camion2 := &camion{Tipo: "Retail", Estado: 0}
+	camion3 := &camion{Tipo: "Pyme", Estado: 0}
 
 	//Establecemos conexión con logisitica dist70:6970
 	var conn *grpc.ClientConn
