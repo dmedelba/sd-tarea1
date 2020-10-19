@@ -121,7 +121,7 @@ func main() {
 
 	//Establecemos conexión con logisitica dist70:6970
 	var conn *grpc.ClientConn
-	conn, err := grpc.Dial("dist70:6071", grpc.WithInsecure())
+	conn, err := grpc.Dial("dist70:6061", grpc.WithInsecure())
 	if err != nil {
 		log.Fatalf("No se pudo establecer la conexión. ERROR: %v", err)
 	}

@@ -18,8 +18,8 @@ import (
 )
 
 const (
-	portCliente = ":6070"
-	portCamion  = ":6071"
+	portCliente = ":6060"
+	portCamion  = ":6061"
 )
 
 // server is used to implement helloworld.GreeterServer.
