@@ -67,7 +67,6 @@ func crearCodigoSeguimientoRetail(in *pb.SolicitudPedidoRetail)(string){
 	return codigo
 }
 
-
 //Registros de paquetes en logistica, solicitado en enunciado.
 //Guardamos los pedidos en un archivo general para obtener su estado e ir actualizando
 //tambien se aprovecha de asignar el pedio a la cola correspondiente
@@ -161,6 +160,7 @@ func guardarPaquetesLogisticaRT(in *pb.SolicitudPedidoRetail, codigoSeguimiento 
 		Estado: estado,
 	}
 	cRetail.PushBack(pedido)
+	log.Printf("PAQUETE AGREGADO A LA COLA, SE SUPONE")
 
 }
 

@@ -90,16 +90,17 @@ func main() {
 	log.Printf("[Camion] Ingrese el tiempo entre entregas de pedidos:")
 	fmt.Scanln(&tiempo_pedidos)
 	//tiempoEspera, err := strconv.Atoi(tiempo_pedidos)
-
+	
+	agregarpaquetes(conn, camion1)
 	// A veces, es posible que no conozca el número de iteraciones que necesitará 
 	//para completar una tarea concreta. En ese caso, puede omitir todas las instrucciones
 	// y usar la palabra clave break para cerrar la ejecución.
-	for{
+
 
 		// IF QUEDAN PAQUETES EN LA COLA RETAIL;
 			// SI NO PREGUNTAR SI QUEDAN PAQUETES PRIORITARIOS EN LA COLA PYMES;
 		//cargamos camion 1 
-		agregarpaquetes(conn, camion1) // AGREGO PAQUETE 1 (ESTADO = 1) (MEDIO)
+		//agregarpaquetes(conn, camion1) // AGREGO PAQUETE 1 (ESTADO = 1) (MEDIO)
 		//VOLVER A PREGUNTAR SI QUEDAN PAQUETES EN COLA
 		//agregarpaquetes(conn, camion1) // AGREGO PAQUETE 2 (ESTADO = 2) (LLENO)
 
@@ -117,6 +118,6 @@ func main() {
 
 		// IMPLEMENTAR UNA FUNCION QUE HAGA EL PROCESO DE REPARTO (LO DIFICIL ESTA AQUI)
 
-	}
+
 
 }
