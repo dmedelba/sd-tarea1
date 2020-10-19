@@ -106,7 +106,7 @@ func guardarPaquetesLogisticaRT(in *pb.SolicitudPedidoRetail, codigoSeguimiento 
 //solicitar el estado de un pedido
 func ObtenerCodigoSeguimiento(ctx context.Context, in *pb.SolicitudSeguimiento) (*pb.RespuestaSeguimiento, error){
 	log.Printf("[Servidor] Consultando el codigo: %d", in.CodigoSeguimiento)
-	return &pb.RespuestaSeguimiento{EstadoPedido:"okokokokok"}
+	return &pb.RespuestaSeguimiento{EstadoPedido:"okokokokok"}, nil
 }
 
 //recibir pedidoPyme
