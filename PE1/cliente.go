@@ -150,6 +150,8 @@ func main() {
 	var tipo_cliente string
 	var accion string
 	var enviado int
+	var code string
+
 	cantidadPedidosPyme := contarPedidos("./archivos/pymes.csv")  
 	cantidadPedidosRetail := contarPedidos("./archivos/retail.csv") 
 	pedidosMax := cantidadPedidosPyme + cantidadPedidosRetail - 2
@@ -226,6 +228,13 @@ func main() {
 			
 		case "2":
 			//consultar estado del pedido con el codigo
+			if (total_pedidos>0){
+				log.Printf("[Cliente] Ingrese el código de seguimiento a consultar: ")
+				fmt.Scanln(&code)
+				consultarEstadoPedido(conn, code)
+			} else{
+				log.Printf("[Cliente] No se ha realizado ningún pedido aún.")
+			}
 			
 		}
 		//tiempo entre pedidos
