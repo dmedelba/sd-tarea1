@@ -8,6 +8,7 @@ import (
 	"io"
 	"bufio"
 	"encoding/csv"
+	"container/list"
 	"time"
 	"net"
 	"google.golang.org/grpc"
@@ -23,11 +24,22 @@ const (
 type server struct {
 	pb.UnimplementedProtosServer
 }
-/*
-type colas struct { 
-	var numeros1 []i
+
+// paquete
+type Paquete struct{
+	IdPaquete string
+	CodigoSeguimiento int
+	Tipo string
+	Valor int
+	Intentos int
+	Estado string
 }
-*/
+
+//Colas de los pedidos en logistica
+var	cPrioritario = list.New()
+var cNormal = list.New()
+var cRetail = list.New()
+
 func conexionCamiones(){
 	lis, err := net.Listen("tcp", portCamion)
 	if err != nil {
@@ -56,6 +68,7 @@ func crearCodigoSeguimientoRetail(in *pb.SolicitudPedidoRetail)(string){
 
 //Registros de paquetes en logistica, solicitado en enunciado.
 //Guardamos los pedidos en un archivo general para obtener su estado e ir actualizando
+//tambien se aprovecha de asignar el pedio a la cola correspondiente
 
 func guardarPaquetesLogisticaPY(in *pb.SolicitudPedidoPyme, codigoSeguimiento string){
 	file,err:=os.Create("./logistica_files/pyme/"+codigoSeguimiento+".csv")
@@ -84,6 +97,23 @@ func guardarPaquetesLogisticaPY(in *pb.SolicitudPedidoPyme, codigoSeguimiento st
 	ww := csv.NewWriter(archivo)
 	ww.WriteAll(paqueteG)
 	archivo.Close()
+
+	//agrego paquete a la cola 
+	pedido := Paquete{
+		IdPaquete: in.IdPaquete,
+		CodigoSeguimiento: codigoSeguimiento,
+		Tipo: in.Tipo,
+		Valor: in.Valor,
+		Intentos: intentos,
+		Estado: estado,
+	}
+
+	if (pedido.Tipo == "prioritario"){
+		cPrioritario.PushBack(pedido)
+	}else{
+		cNormal.PushBack(pedido)
+	}
+
 }
 
 func guardarPaquetesLogisticaRT(in *pb.SolicitudPedidoRetail, codigoSeguimiento string){
@@ -114,6 +144,17 @@ func guardarPaquetesLogisticaRT(in *pb.SolicitudPedidoRetail, codigoSeguimiento 
 	ww := csv.NewWriter(archivo)
 	ww.WriteAll(paqueteG)
 	archivo.Close()
+
+	//agrego paquete a la cola 
+	pedido := Paquete{
+		IdPaquete: in.IdPaquete,
+		CodigoSeguimiento: codigoSeguimiento,
+		Tipo: tipo,
+		Valor: in.Valor,
+		Intentos: intentos,
+		Estado: estado,
+	}
+	cRetail.PushBack(pedido)
 
 }
 
@@ -147,6 +188,8 @@ func (s *server) SolicitarPedidoPyme(ctx context.Context, in *pb.SolicitudPedido
 	//Registrar el pedido y crear codigo de seguimiento
 	codigo := crearCodigoSeguimientoPyme(in)
 	guardarPaquetesLogisticaPY(in, codigo)
+
+	
 	return &pb.RespuestaPedido{CodigoSeguimiento: codigo}, nil
 }
 //recibir pedidoRetail
