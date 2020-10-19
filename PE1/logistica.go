@@ -120,8 +120,8 @@ func (s *server) ObtenerCodigoSeguimiento(ctx context.Context, in *pb.SolicitudS
 			log.Fatal(error)
 			}
 		if (line[1]==in.CodigoSeguimiento){
-			estadoPedido = line[5]
 			csvFile.Close()
+			estadoPedido = line[5]
 		}
 	}
 	return &pb.RespuestaSeguimiento{EstadoPedido:estadoPedido}, nil
