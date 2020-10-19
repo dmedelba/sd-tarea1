@@ -69,11 +69,11 @@ func agregarpaquetes(conn *grpc.ClientConn, camioncito *camion) {
 }
 
 func sumarintento(cantidad_actual string) string {
-	intente, _ = strconv.Atoi(cantidad_actual)
+	intente, _ := strconv.Atoi(cantidad_actual)
 	return strconv.Itoa(intente + 1)
 }
 
-func entregarpedidos(camioncito *camion, tiempo_pedidos string, tiempo_pedidos2 string) {
+func entregarpedidos(camioncito *camion, tiempo_pedidos int, tiempo_pedidos2 int) {
 	//se busca cual de los dos paquetes se entregara primero en caso de estar lleno
 	// defino variables auxiliares
 	var val1 int
@@ -83,11 +83,13 @@ func entregarpedidos(camioncito *camion, tiempo_pedidos string, tiempo_pedidos2 
 		if camioncito.Estado == 2 {
 			valor1 := camioncito.Paquete1.Valor
 			valor2 := camioncito.Paquete2.Valor
+			intentoPaquete1, _ := strconv.Atoi(camioncito.Paquete1.Intentos)
+			intentoPaquete2, _ := strconv.Atoi(camioncito.Paquete2.Intentos)
 			val1, _ = strconv.Atoi(valor1)
 			val2, _ = strconv.Atoi(valor2)
 
 			if val1 > val2 {
-				if (rand.Intn(100) < 80) && (camioncito.Paquete1.Intentos < 3) && (camioncito.Paquete1.Fechaentrega == "0") {
+				if (rand.Intn(100) < 80) && (intentoPaquete1 < 3) && (camioncito.Paquete1.Fechaentrega == "0") {
 					time.Sleep(time.Duration(tiempo_pedidos) * time.Second)
 					camioncito.Paquete1.Fechaentrega = time.Now().String()
 				} else {
@@ -95,7 +97,7 @@ func entregarpedidos(camioncito *camion, tiempo_pedidos string, tiempo_pedidos2 
 					sumarintento(camioncito.Paquete1.Intento)
 				}
 			} else {
-				if (rand.Intn(100) < 80) && (camioncito.Paquete2.Intentos < 3) && (camioncito.Paquete2.Fechaentrega == "0") {
+				if (rand.Intn(100) < 80) && (intentoPaquete2 < 3) && (camioncito.Paquete2.Fechaentrega == "0") {
 					time.Sleep(time.Duration(tiempo_pedidos) * time.Second)
 					camioncito.Paquete2.Fechaentrega = time.Now().String()
 				} else {
@@ -130,7 +132,9 @@ func main() {
 	fmt.Scanln(&tiempo_pedidos)
 	log.Printf("[Camion] Ingrese el tiempo entre entregas de pedidos:")
 	fmt.Scanln(&tiempo_pedidos2)
-	//tiempoEspera, err := strconv.Atoi(tiempo_pedidos)
+
+	tiempoEspera1, _ := strconv.Atoi(tiempo_pedidos)
+	tiempoEspera2, _ := strconv.Atoi(tiempo_pedidos2)
 
 	agregarpaquetes(conn, camion1)
 
