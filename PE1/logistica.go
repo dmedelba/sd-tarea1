@@ -28,10 +28,10 @@ type server struct {
 // paquete
 type Paquete struct{
 	IdPaquete string
-	CodigoSeguimiento int
+	CodigoSeguimiento string
 	Tipo string
-	Valor int
-	Intentos int
+	Valor string
+	Intentos string
 	Estado string
 }
 
