@@ -74,9 +74,9 @@ func agregarpaquetes(conn *grpc.ClientConn, camioncito *camion ) {
 func main() {
 	var tiempo_pedidos string
 	// se define cada camion (2 retail y 1 pyme)
-	camion1 := &camion{Tipo: "Retail", Estado: 0}
-	//camion2 := &camion{Tipo: "Retail", Estado: 0}
-	//camion3 := &camion{Tipo: "Pyme", Estado: 0}
+	camion1 := &camion{Tipo: "retail", Estado: 0}
+	//camion2 := &camion{Tipo: "retail", Estado: 0}
+	//camion3 := &camion{Tipo: "pyme", Estado: 0}
 
 	//Establecemos conexión con logisitica dist70:6970
 	var conn *grpc.ClientConn
@@ -90,7 +90,7 @@ func main() {
 	log.Printf("[Camion] Ingrese el tiempo entre entregas de pedidos:")
 	fmt.Scanln(&tiempo_pedidos)
 	//tiempoEspera, err := strconv.Atoi(tiempo_pedidos)
-	
+
 	agregarpaquetes(conn, camion1)
 	// A veces, es posible que no conozca el número de iteraciones que necesitará 
 	//para completar una tarea concreta. En ese caso, puede omitir todas las instrucciones
