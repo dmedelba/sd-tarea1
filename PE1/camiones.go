@@ -197,8 +197,8 @@ func main() {
 	log.Printf("[Camion] Ingrese el tiempo entre entregas de pedidos:")
 	fmt.Scanln(&tiempo_pedidos2)
 
-	tiempoEspera1, _ := strconv.Atoi(tiempo_pedidos)
-	tiempoEspera2, _ := strconv.Atoi(tiempo_pedidos2)
+	tiempoEspera1, _ = strconv.Atoi(tiempo_pedidos)
+	tiempoEspera2, _ = strconv.Atoi(tiempo_pedidos2)
 
 	//cargamos camion 1
 	agregarpaquetes(conn, camion1) // AGREGO PAQUETE 1 (ESTADO = 1) (MEDIO)
