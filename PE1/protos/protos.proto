@@ -61,9 +61,9 @@ message SolicitudPaquete {
 //respuesta solicitud paquete
 message RespuestaPaquete{
     string IdPaquete = 1;
-    int32 CodigoSeguimiento = 2;
+    string CodigoSeguimiento = 2;
     string Tipo = 3;
-    int32 Valor = 4;
+    string Valor = 4;
     string Origen = 5;
     string Destino = 6;
 }
