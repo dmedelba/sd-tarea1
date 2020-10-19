@@ -103,10 +103,23 @@ func guardarPaquetesLogisticaRT(in *pb.SolicitudPedidoRetail, codigoSeguimiento 
 
 }
 
-//solicitar el estado de un pedido
+//solicitar el estado de un pedido desde el cliente
 func (s *server) ObtenerCodigoSeguimiento(ctx context.Context, in *pb.SolicitudSeguimiento) (*pb.RespuestaSeguimiento, error){
 	log.Printf("[Servidor] Consultando el codigo: %d", in.CodigoSeguimiento)
-	return &pb.RespuestaSeguimiento{EstadoPedido:"okokokokok"}, nil
+	csvFile,_=os.Open("./logistica_files/pedidosGeneral.csv")
+	reader = csv.NewReader(bufio.NewReader(csvFile))
+	for{
+		line,error :=reader.Read()
+		if error==io.EOF{
+			break
+		}else if error!=nil{
+			log.Fatal(error)
+			}
+		if (line[1]==in.CodigoSeguimiento){
+			csvFile.Close()
+			return &pb.RespuestaSeguimiento{EstadoPedido:line[5]}, nil
+		}
+	}
 }
 
 //recibir pedidoPyme
