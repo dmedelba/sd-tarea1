@@ -1,74 +1,75 @@
-
 // Package main implements a client for Greeter service.
 package main
 
 import (
-	"os"
-	"fmt"
 	"bufio"
-	"io"
-	"strconv"
 	"context"
-	"log"
-	"time"
 	"encoding/csv"
-	"google.golang.org/grpc"
+	"fmt"
+	"io"
+	"log"
+	"os"
+	"strconv"
+	"time"
+
 	pb "github.com/dmedelba/sd-tarea1/PE1/protos"
+	"google.golang.org/grpc"
 )
 
 const (
-	puerto     = "dist70:6060"
+	puerto = "dist70:6070"
 )
-func contarPedidos(nombre_archivo string)(int){
+
+func contarPedidos(nombre_archivo string) int {
 	cantidad_lineas := 0
 	csvfile, err := os.Open(nombre_archivo)
-		if err != nil {
-			log.Fatalln("No se pudo leer el archivo", err)
+	if err != nil {
+		log.Fatalln("No se pudo leer el archivo", err)
+	}
+	r := csv.NewReader(bufio.NewReader(csvfile))
+	for {
+		line, err := r.Read()
+		if err == io.EOF {
+			break
+		} else if err != nil && line == nil { //line puesto porque o si no se queja
+			log.Fatal(err)
+			continue
 		}
-		r := csv.NewReader(bufio.NewReader(csvfile))
-		for{
-			line, err := r.Read()
-			if err == io.EOF{
-				break
-			}else if err != nil && line==nil{ //line puesto porque o si no se queja
-				log.Fatal(err)
-				continue
-			}
-			cantidad_lineas++
-		}
+		cantidad_lineas++
+	}
 	return cantidad_lineas
 }
 
-func enviarPedido(conn *grpc.ClientConn, id_pedido int, tipo_cliente string)(int){
-	//conexión con el servidor 
+func enviarPedido(conn *grpc.ClientConn, id_pedido int, tipo_cliente string) int {
+	//conexión con el servidor
 	c := pb.NewProtosClient(conn)
-	if (tipo_cliente == "1"){
+	if tipo_cliente == "1" {
 		//Se lee csv Pyme
 		csvfile, err := os.Open("./archivos/pymes.csv")
 		log.Printf("Pyme leido")
 		if err != nil {
 			log.Fatalln("No se pudo leer el archivo", err)
 		}
-			//r := csv.NewReader(csvfile)
+		//r := csv.NewReader(csvfile)
 		r := csv.NewReader(bufio.NewReader(csvfile))
-		for i:=0; true; i++{
+		for i := 0; true; i++ {
 			line, err := r.Read()
 			var tipo_pedido string
-			if (i == id_pedido){
-				if (line[5]=="1"){
+			if i == id_pedido {
+				if line[5] == "1" {
 					tipo_pedido = "prioritario"
-				}else{
+				} else {
 					tipo_pedido = "normal"
 				}
 				ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 				defer cancel()
 				r, err := c.SolicitarPedidoPyme(ctx, &pb.SolicitudPedidoPyme{
-					IdPaquete:line[0],
-					Tipo: tipo_pedido, 
-					Nombre: line[1], 
-					Valor: line[2], 
-					Origen:line[3], 
-					Destino:line[4]})
+					IdPaquete: line[0],
+					Tipo:      tipo_pedido,
+					Nombre:    line[1],
+					Valor:     line[2],
+					Origen:    line[3],
+					Destino:   line[4]})
 				if err != nil {
 					log.Fatalf("No se pudo enviar el pedido. ERROR: %v", err)
 				}
@@ -76,15 +77,15 @@ func enviarPedido(conn *grpc.ClientConn, id_pedido int, tipo_cliente string)(int
 				log.Printf("[Servidor] Codigo de seguimiento: " + r.CodigoSeguimiento)
 				return 1
 			}
-			if err == io.EOF{
+			if err == io.EOF {
 				break
-			}else if err != nil{
+			} else if err != nil {
 				log.Fatal(err)
 				continue
 			}
-			
+
 		}
-	}else{
+	} else {
 		//Se lee csv Retail
 		csvfile, err := os.Open("./archivos/retail.csv")
 		if err != nil {
@@ -92,17 +93,17 @@ func enviarPedido(conn *grpc.ClientConn, id_pedido int, tipo_cliente string)(int
 		}
 		//r := csv.NewReader(csvfile)
 		r := csv.NewReader(bufio.NewReader(csvfile))
-		for i:=0; true; i++{
+		for i := 0; true; i++ {
 			line, err := r.Read()
-			if (i == id_pedido){
+			if i == id_pedido {
 				ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 				defer cancel()
 				r, err := c.SolicitarPedidoRetail(ctx, &pb.SolicitudPedidoRetail{
-					IdPaquete:line[0], 
-					Nombre: line[1], 
-					Valor: line[2], 
-					Origen:line[3], 
-					Destino:line[4]})
+					IdPaquete: line[0],
+					Nombre:    line[1],
+					Valor:     line[2],
+					Origen:    line[3],
+					Destino:   line[4]})
 				if err != nil {
 					log.Fatalf("No se pudo enviar el pedido. ERROR: %v", err)
 				}
@@ -110,33 +111,31 @@ func enviarPedido(conn *grpc.ClientConn, id_pedido int, tipo_cliente string)(int
 				log.Printf("[Servidor] Codigo de seguimiento: " + r.CodigoSeguimiento)
 				return 1
 			}
-			if err == io.EOF{
+			if err == io.EOF {
 				break
-			}else if err != nil{
+			} else if err != nil {
 				log.Fatal(err)
 				continue
 			}
-			
+
 		}
 	}
 
-	
-	
 	return 1
 	//c := pb.NewProtosClient(conn)
 }
 
-func consultarEstadoPedido(conn *grpc.ClientConn, codigoSeguimiento string){
+func consultarEstadoPedido(conn *grpc.ClientConn, codigoSeguimiento string) {
 	c := pb.NewProtosClient(conn)
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
 	r, err := c.ObtenerCodigoSeguimiento(ctx, &pb.SolicitudSeguimiento{
-		CodigoSeguimiento:codigoSeguimiento})
+		CodigoSeguimiento: codigoSeguimiento})
 	if err != nil {
 		log.Fatalf("No se pudo solicitar el estado del pedido. ERROR: %v", err)
 	}
 	//respuesta servidor
-	log.Printf("[Servidor] Estado del paquete " + codigoSeguimiento + " :"  + r.EstadoPedido)
+	log.Printf("[Servidor] Estado del paquete " + codigoSeguimiento + " :" + r.EstadoPedido)
 }
 func main() {
 	var tiempo_pedidos string
@@ -145,18 +144,18 @@ func main() {
 	var enviado int
 	var code string
 
-	cantidadPedidosPyme := contarPedidos("./archivos/pymes.csv")  
-	cantidadPedidosRetail := contarPedidos("./archivos/retail.csv") 
+	cantidadPedidosPyme := contarPedidos("./archivos/pymes.csv")
+	cantidadPedidosRetail := contarPedidos("./archivos/retail.csv")
 	pedidosMax := cantidadPedidosPyme + cantidadPedidosRetail - 2
 
 	log.Printf(strconv.Itoa(cantidadPedidosPyme))
 	log.Printf(strconv.Itoa(cantidadPedidosRetail))
 
-	total_pedidos := 0 
+	total_pedidos := 0
 	pedido_pymes := 1
 	pedido_retail := 1
 	log.Printf("Estableciendo conexión con logistica...")
-	
+
 	//Establecemos conexión con logisitica dist70:6969
 	var conn *grpc.ClientConn
 	conn, err := grpc.Dial(puerto, grpc.WithInsecure())
@@ -169,14 +168,14 @@ func main() {
 	log.Printf("[Cliente] Ingrese el tiempo entre pedidos:")
 	fmt.Scanln(&tiempo_pedidos)
 	tiempoEspera, err := strconv.Atoi(tiempo_pedidos)
-	for true{
+	for true {
 		log.Printf("[Cliente] Seleccione el tipo de cliente que corresponde: ")
 		log.Printf("1. Pyme")
 		log.Printf("2. Retail")
 		log.Printf("0. Para finalizar conexión")
 		fmt.Scanln(&tipo_cliente)
 
-		if (tipo_cliente == "0"){
+		if tipo_cliente == "0" {
 			break
 		}
 
@@ -188,52 +187,52 @@ func main() {
 		switch accion {
 		case "1":
 			//Enviar un pedido , pyme o retail dado por el tipo de cliente
-			if (total_pedidos == pedidosMax){
+			if total_pedidos == pedidosMax {
 				log.Printf("[Cliente] No quedan más pedidos disponibles. ")
 				break
 			}
 
 			switch tipo_cliente {
 			case "1":
-				if (pedido_pymes < cantidadPedidosPyme){
+				if pedido_pymes < cantidadPedidosPyme {
 					enviado = enviarPedido(conn, pedido_pymes, tipo_cliente)
-					if (enviado == 1){
+					if enviado == 1 {
 						log.Printf("---------------------------------")
 					}
-					pedido_pymes++;
-				}else{
+					pedido_pymes++
+				} else {
 					log.Printf("[Cliente] No quedan más pedidos pyme")
 				}
 			case "2":
-				if (pedido_retail < cantidadPedidosRetail){
+				if pedido_retail < cantidadPedidosRetail {
 					enviado = enviarPedido(conn, pedido_retail, tipo_cliente)
-					if (enviado == 1){ 
+					if enviado == 1 {
 						log.Printf("---------------------------------")
 					}
-					pedido_retail++;
-	
-				}else{
+					pedido_retail++
+
+				} else {
 					log.Printf("[Cliente] No quedan más pedidos retail")
 				}
-			}	
-			 
-			total_pedidos ++
-			
+			}
+
+			total_pedidos++
+
 		case "2":
 			//consultar estado del pedido con el codigo
-			if (total_pedidos>0){
+			if total_pedidos > 0 {
 				log.Printf("[Cliente] Ingrese el código de seguimiento a consultar: ")
 				fmt.Scanln(&code)
 				consultarEstadoPedido(conn, code)
-			} else{
+			} else {
 				log.Printf("[Cliente] No se ha realizado ningún pedido aún.")
 			}
-			
+
 		}
 		//tiempo entre pedidos
-		log.Printf("[Espera] Esperando " + tiempo_pedidos +" segundos para realizar otro pedido")
+		log.Printf("[Espera] Esperando " + tiempo_pedidos + " segundos para realizar otro pedido")
 		time.Sleep(time.Duration(tiempoEspera) * time.Second)
 	}
-	
+
 	log.Printf("Conexión finalizada")
 }
