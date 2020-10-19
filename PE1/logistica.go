@@ -41,7 +41,8 @@ func crearCodigoSeguimientoRetail(in *pb.SolicitudPedidoRetail)(string){
 
 
 //Registros de paquetes en logistica, solicitado en enunciado.
-//hacer una lista con estos archivos
+//Guardamos los pedidos en un archivo general para obtener su estado e ir actualizando
+
 func guardarPaquetesLogisticaPY(in *pb.SolicitudPedidoPyme, codigoSeguimiento string){
 	file,err:=os.Create("./logistica_files/pyme/"+codigoSeguimiento+".csv")
 	if err!=nil{
@@ -56,7 +57,7 @@ func guardarPaquetesLogisticaPY(in *pb.SolicitudPedidoPyme, codigoSeguimiento st
 	file.Close()
 
 	//guardamos el paquete en nuestro archivo general
-	archivo, error := os.OpenFile("./logistica_files/pyme/pedidosGeneral.csv", os.O_APPEND|os.O_WRONLY, os.ModeAppend)
+	archivo, error := os.OpenFile("./logistica_files/pedidosGeneral.csv", os.O_APPEND|os.O_WRONLY, os.ModeAppend)
 	if error != nil {
 		log.Fatal(error)
 	}
@@ -86,7 +87,7 @@ func guardarPaquetesLogisticaRT(in *pb.SolicitudPedidoRetail, codigoSeguimiento 
 	file.Close()
 
 	//guardamos el paquete en nuestro archivo general
-	archivo, error := os.OpenFile("./logistica_files/pyme/pedidosGeneral.csv", os.O_APPEND|os.O_WRONLY, os.ModeAppend)
+	archivo, error := os.OpenFile("./logistica_files/pedidosGeneral.csv", os.O_APPEND|os.O_WRONLY, os.ModeAppend)
 	if error != nil {
 		log.Fatal(error)
 	}
@@ -102,7 +103,11 @@ func guardarPaquetesLogisticaRT(in *pb.SolicitudPedidoRetail, codigoSeguimiento 
 
 }
 
-//Guardamos los pedidos en un archivo general para obtener su estado e ir actualizando
+//solicitar el estado de un pedido
+func ObtenerCodigoSeguimiento(ctx context.Context, in *pb.SolicitudSeguimiento) (*pb.RespuestaSeguimiento){
+	log.Printf("[Servidor] Consultando el codigo: %d", in.CodigoSeguimiento)
+	return &pb.RespuestaSeguimiento{EstadoPedido:"okokokokok"}, nil
+}
 
 //recibir pedidoPyme
 func (s *server) SolicitarPedidoPyme(ctx context.Context, in *pb.SolicitudPedidoPyme) (*pb.RespuestaPedido, error) {

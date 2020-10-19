@@ -133,6 +133,18 @@ func enviarPedido(conn *grpc.ClientConn, id_pedido int, tipo_cliente string)(int
 	//c := pb.NewProtosClient(conn)
 }
 
+func consultarEstadoPedido(conn *grpc.ClientConn, codigoSeguimiento string){
+	c := pb.NewProtosClient(conn)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+	defer cancel()
+	r, err := c.ObtenerCodigoSeguimiento(ctx, &pb.SolicitudSeguimiento{
+		CodigoSeguimiento:codigoSeguimiento})
+	if err != nil {
+		log.Fatalf("No se pudo solicitar el estado del pedido. ERROR: %v", err)
+	}
+	//respuesta servidor
+	log.Printf("[Servidor] Estado del paquete " + codigoSeguimiento + " :"  + r.EstadoPedido)
+}
 func main() {
 	var tiempo_pedidos string
 	var tipo_cliente string
