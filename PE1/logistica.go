@@ -67,7 +67,7 @@ func guardarPaquetesLogisticaPY(in *pb.SolicitudPedidoPyme, codigoSeguimiento st
 	estado := "En Bodega"
 	paqueteG = append(paqueteG, []string{in.IdPaquete, codigoSeguimiento, in.Tipo, in.Valor, intentos, estado})
 	ww := csv.NewWriter(archivo)
-	ww.WriteAll(data)
+	ww.WriteAll(paqueteG)
 	archivo.Close()
 }
 
@@ -97,7 +97,7 @@ func guardarPaquetesLogisticaRT(in *pb.SolicitudPedidoRetail, codigoSeguimiento 
 	estado := "En Bodega"
 	paqueteG = append(paqueteG, []string{in.IdPaquete, codigoSeguimiento, tipo, in.Valor, intentos, estado})
 	ww := csv.NewWriter(archivo)
-	ww.WriteAll(data)
+	ww.WriteAll(paqueteG)
 	archivo.Close()
 
 }
