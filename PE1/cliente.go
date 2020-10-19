@@ -17,7 +17,7 @@ import (
 )
 
 const (
-	puerto = "dist70:6072"
+	puerto = "dist70:6074"
 )
 
 func contarPedidos(nombre_archivo string) int {
