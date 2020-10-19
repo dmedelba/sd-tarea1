@@ -41,6 +41,13 @@ func agregarpaquetes(conn *grpc.ClientConn, camioncito *camion ) {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	r, err := c.SolicitarPaquete(ctx, &pb.SolicitudPaquete{Tipo: camioncito.Tipo})
 	defer cancel()
+	log.Printf(r.IdPaquete)
+	log.Printf(r.CodigoSeguimiento) 
+	log.Printf(r.Tipo) 
+	log.Printf(r.Valor) 
+	log.Printf(r.Origen) 
+	log.Printf(r.Destino) 
+	/*
 	if err != nil {
 		log.Fatalf("No se pudo agregar el paquete. ERROR: %v", err)
 	}
@@ -53,6 +60,8 @@ func agregarpaquetes(conn *grpc.ClientConn, camioncito *camion ) {
 			Destino:r.Destino, Intentos: "0", Fechaentrega: "0"}
 		camioncito.Estado = 2
 	}
+	*/
+
 	// No se considerará el caso en que el estado es 2 puesto que con ese estado esta en proceso de envio y no
 	// de asignación de paquetes
 }
@@ -89,19 +98,19 @@ func main() {
 		//cargamos camion 1 
 		agregarpaquetes(conn, camion1) // AGREGO PAQUETE 1 (ESTADO = 1) (MEDIO)
 		//VOLVER A PREGUNTAR SI QUEDAN PAQUETES EN COLA
-		agregarpaquetes(conn, camion1) // AGREGO PAQUETE 2 (ESTADO = 2) (LLENO)
+		//agregarpaquetes(conn, camion1) // AGREGO PAQUETE 2 (ESTADO = 2) (LLENO)
 
 		// IF QUEDAN PAQUETES EN LA COLA RETAIL;
 			// SI NO PREGUNTAR SI QUEDAN PAQUETES PRIORITARIOS EN LA COLA PYMES;
 		//cargamos camion 2 
-		agregarpaquetes(conn, camion2) // AGREGO PAQUETE 1 (ESTADO = 1) (MEDIO)
+		//agregarpaquetes(conn, camion2) // AGREGO PAQUETE 1 (ESTADO = 1) (MEDIO)
 		//VOLVER A PREGUNTAR SI QUEDAN PAQUETES EN COLA
-		agregarpaquetes(conn, camion2) // AGREGO PAQUETE 2 (ESTADO = 2) (LLENO)
+		//agregarpaquetes(conn, camion2) // AGREGO PAQUETE 2 (ESTADO = 2) (LLENO)
 
 		// IF QUEDAN PAQUETES EN LA COLA PYMES
 		//cargamos camion 3 
-		agregarpaquetes(conn, camion3) // AGREGO PAQUETE 1 (ESTADO = 1) (MEDIO)
-		agregarpaquetes(conn, camion3) // AGREGO PAQUETE 2 (ESTADO = 2) (LLENO)
+		//agregarpaquetes(conn, camion3) // AGREGO PAQUETE 1 (ESTADO = 1) (MEDIO)
+		//agregarpaquetes(conn, camion3) // AGREGO PAQUETE 2 (ESTADO = 2) (LLENO)
 
 		// IMPLEMENTAR UNA FUNCION QUE HAGA EL PROCESO DE REPARTO (LO DIFICIL ESTA AQUI)
 

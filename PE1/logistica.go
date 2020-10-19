@@ -31,6 +31,8 @@ type Paquete struct{
 	CodigoSeguimiento string
 	Tipo string
 	Valor string
+	Origen string
+	Destino string
 	Intentos string
 	Estado string
 }
@@ -104,6 +106,8 @@ func guardarPaquetesLogisticaPY(in *pb.SolicitudPedidoPyme, codigoSeguimiento st
 		CodigoSeguimiento: codigoSeguimiento,
 		Tipo: in.Tipo,
 		Valor: in.Valor,
+		Origen: in.Origen,
+		Destino: in.Destino,
 		Intentos: intentos,
 		Estado: estado,
 	}
@@ -151,6 +155,8 @@ func guardarPaquetesLogisticaRT(in *pb.SolicitudPedidoRetail, codigoSeguimiento 
 		CodigoSeguimiento: codigoSeguimiento,
 		Tipo: tipo,
 		Valor: in.Valor,
+		Origen: in.Origen,
+		Destino: in.Destino,
 		Intentos: intentos,
 		Estado: estado,
 	}
@@ -200,6 +206,71 @@ func (s *server) SolicitarPedidoRetail(ctx context.Context, in *pb.SolicitudPedi
 	codigo := crearCodigoSeguimientoRetail(in)
 	guardarPaquetesLogisticaRT(in, codigo)
 	return &pb.RespuestaPedido{CodigoSeguimiento: codigo}, nil
+}
+//enviamos paquete a el camion dependiendo de su tipo
+func (s *server) SolicitarPaquete(ctx context.Context, in *pb.SolicitudPaquete)(*pb.RespuestaPaquete, error){
+	var paqueteEnviar Paquete
+	var vacio string
+	tipodeCamion := in.Tipo
+
+	if (tipodeCamion == "retail"){
+		if cRetail.Front() != nil {
+			primerElemento := cRetail.Front()
+			paqueteEnviar = Paquete(primerElemento.Value.(Paquete))
+			//itemII = paqueteEnviar
+			cRetail.Remove(primerElemento)
+
+		} else if cPrioritario.Front() != nil {
+			primerElemento := cPrioritario.Front()
+			paqueteEnviar = Paquete(primerElemento.Value.(Paquete))
+			//itemII = paqueteEnviar
+			cPrioritario.Remove(primerElemento)
+
+		} else {
+			log.Printf("[Servidor] No hay paquetes disponibles")
+			return &pb.RespuestaPaquete{
+				IdPaquete: vacio,
+				CodigoSeguimiento: vacio,
+				Tipo: vacio,
+				Valor: vacio,
+				Origen: vacio,
+				Destino: vacio,
+			}, nil
+		}
+	}else{
+		if cPrioritario.Front() != nil {
+			primerElemento := cPrioritario.Front()
+			paqueteEnviar = Paquete(primerElemento.Value.(Paquete))
+			//itemII = paqueteEnviar
+			cPrioritario.Remove(primerElemento)
+
+		} else if cNormal.Front() != nil {
+			primerElemento := cNormal.Front()
+			paqueteEnviar = Paquete(primerElemento.Value.(Paquete))
+			//itemII = paqueteEnviar
+			cNormal.Remove(primerElemento)
+
+		} else {
+			log.Printf("[Servidor] No hay paquetes disponibles")
+			return &pb.RespuestaPaquete{
+				IdPaquete: vacio,
+				CodigoSeguimiento: vacio,
+				Tipo: vacio,
+				Valor: vacio,
+				Origen: vacio,
+				Destino: vacio,
+			}, nil
+		
+		}		
+	}
+	return &pb.RespuestaPaquete{
+		IdPaquete: paqueteEnviar.IdPaquete,
+		CodigoSeguimiento: paqueteEnviar.CodigoSeguimiento,
+		Tipo: paqueteEnviar.Tipo,
+		Valor: paqueteEnviar.Valor,
+		Origen: paqueteEnviar.Origen,
+		Destino: paqueteEnviar.Destino,
+	}, nil
 }
 
 func main() {
