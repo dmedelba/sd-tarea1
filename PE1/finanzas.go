@@ -105,19 +105,15 @@ func main() {
 
 			if (fechaent != "0"){
 				ganancia = val 
-				perdida = (cantintento-1)*10 // el primer intento es gratis
-			}
-
-			else {
+				perdida = (cantintento-1)*10 
+			}else {
 				if(tipe == "normal"){
 					ganancia = 0
 					perdida = (cantintento-1)*10
-				}
-				else if (tipe == "prioritario"){
+				}else if (tipe == "prioritario"){
 					ganancia = int(val*0.3)
 					perdida = (cantintento-1)*10
-				}
-				else{
+				}else{
 					ganancia = val
 					perdida = (cantintento-1)*10
 				}
