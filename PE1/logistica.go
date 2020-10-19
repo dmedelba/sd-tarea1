@@ -161,6 +161,7 @@ func guardarPaquetesLogisticaRT(in *pb.SolicitudPedidoRetail, codigoSeguimiento 
 	}
 	cRetail.PushBack(pedido)
 	log.Printf("PAQUETE AGREGADO A LA COLA, SE SUPONE")
+	fmt.Println(cRetail.Front())
 
 }
 
