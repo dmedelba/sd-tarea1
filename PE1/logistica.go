@@ -28,7 +28,18 @@ type colas struct {
 	var numeros1 []i
 }
 */
-
+func conexionCamiones(){
+	lis, err := net.Listen("tcp", portCamion)
+	if err != nil {
+		log.Fatalf("Servidor falla al escuchar camiones. ERROR: %v", err)
+	}
+	log.Printf("[Servidor] Esperando comunicación camiones.")
+	s := grpc.NewServer()
+	pb.RegisterProtosServer(s, &server{})
+	if err := s.Serve(lis); err != nil {
+		log.Fatalf("failed to serve: %v", err)
+	}
+}
 //Crear codigos de seguimiento unicos.
 func crearCodigoSeguimientoPyme(in *pb.SolicitudPedidoPyme)(string){
 	var codigo string
@@ -160,16 +171,8 @@ func main() {
 		log.Fatalf("failed to serve: %v", err)
 	}
 
-	lis, err = net.Listen("tcp", portCamion)
-	if err != nil {
-		log.Fatalf("Servidor falla al escuchar camiones. ERROR: %v", err)
-	}
-	log.Printf("[Servidor] Esperando comunicación camiones.")
-	s = grpc.NewServer()
-	pb.RegisterProtosServer(s, &server{})
-	if err := s.Serve(lis); err != nil {
-		log.Fatalf("failed to serve: %v", err)
-	}
+	go conexionCamiones()
+	
 
 	
 }
