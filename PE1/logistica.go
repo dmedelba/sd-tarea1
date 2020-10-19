@@ -15,7 +15,7 @@ import (
 )
 
 const (
-	portCliente = ":7071"
+	portCliente = ":7079"
 	portCamion = ":6970"
 )
 

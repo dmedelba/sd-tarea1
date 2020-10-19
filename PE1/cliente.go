@@ -17,14 +17,7 @@ import (
 )
 
 const (
-	cantidad_pedidos = 60;
-	puerto     = "dist70:7071"
-	idPaquete = "1";
-    tipo = "pyme";
-    nombre = "caca";
-    valor = "1400";
-    origen = "tienda-a";
-    destino = "tienda-b";
+	puerto     = "dist70:7079"
 )
 func contarPedidos(nombre_archivo string)(int){
 	cantidad_lineas := 0
