@@ -94,7 +94,7 @@ func entregarpedidos(camioncito *camion, tiempo_pedidos int, tiempo_pedidos2 int
 					camioncito.Paquete1.Fechaentrega = time.Now().String()
 				} else {
 					time.Sleep(time.Duration(tiempo_pedidos) * time.Second)
-					sumarintento(camioncito.Paquete1.Intento)
+					sumarintento(camioncito.Paquete1.Intentos)
 				}
 			} else {
 				if (rand.Intn(100) < 80) && (intentoPaquete2 < 3) && (camioncito.Paquete2.Fechaentrega == "0") {
@@ -102,7 +102,7 @@ func entregarpedidos(camioncito *camion, tiempo_pedidos int, tiempo_pedidos2 int
 					camioncito.Paquete2.Fechaentrega = time.Now().String()
 				} else {
 					time.Sleep(time.Duration(tiempo_pedidos) * time.Second)
-					sumarintento(camioncito.Paquete2.Intento)
+					sumarintento(camioncito.Paquete2.Intentos)
 				}
 			}
 		}
