@@ -242,15 +242,5 @@ func main() {
 		time.Sleep(time.Duration(tiempoEspera) * time.Second)
 	}
 	
-	/*
-	// Contact the server and print out its response.
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
-	defer cancel()
-	r, err := c.SolicitarPedidoPyme(ctx, &pb.SolicitudPedidoPyme{IdPaquete:idPaquete,Tipo: tipo, Nombre: nombre, Valor: valor, Origen:origen, Destino:destino})
-	if err != nil {
-		log.Fatalf("could not greet: %v", err)
-	}
-	log.Printf(r)
-	*/
 	log.Printf("Conexión finalizada")
 }
