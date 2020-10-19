@@ -17,7 +17,7 @@ import (
 )
 
 const (
-	puerto     = "dist70:7079"
+	puerto     = "dist70:6060"
 )
 func contarPedidos(nombre_archivo string)(int){
 	cantidad_lineas := 0
