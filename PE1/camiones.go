@@ -18,7 +18,7 @@ import (
 type paquete struct {
 	Idpaquete    string
 	Tipo         string // retail,prioritario,normal
-	Valor        int // valor del productito
+	Valor        string // valor del productito
 	Origen       string
 	Destino      string
 	Intentos     string //3,2,1
