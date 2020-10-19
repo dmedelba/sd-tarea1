@@ -94,17 +94,17 @@ func entregarpedidos(camioncito *camion, tiempoEspera1 int, tiempoEspera2 int) {
 					time.Sleep(time.Duration(tiempoEspera1) * time.Second)
 					camioncito.Paquete1.Fechaentrega = time.Now().String()
 					camioncito.Estado = 1
-					entregarpedidos(camioncito, tiempoEspera1, tiempoEspera2 )
+					entregarpedidos(camioncito, tiempoEspera1, tiempoEspera2)
 				} else {
-					if (intentoPaquete1 < 3){
+					if intentoPaquete1 < 3 {
 						time.Sleep(time.Duration(tiempoEspera1) * time.Second)
 						sumarintento(camioncito.Paquete1.Intentos)
 						time.Sleep(time.Duration(tiempoEspera2) * time.Second)
-						entregarpedidos(camioncito, tiempoEspera1, tiempoEspera2 )
-					}else{
+						entregarpedidos(camioncito, tiempoEspera1, tiempoEspera2)
+					} else {
 						camioncito.Estado = 1
 						time.Sleep(time.Duration(tiempoEspera2) * time.Second)
-						entregarpedidos(camioncito, tiempoEspera1, tiempoEspera2 )
+						entregarpedidos(camioncito, tiempoEspera1, tiempoEspera2)
 					}
 				}
 			} else {
@@ -113,20 +113,20 @@ func entregarpedidos(camioncito *camion, tiempoEspera1 int, tiempoEspera2 int) {
 					camioncito.Paquete2.Fechaentrega = time.Now().String()
 					camioncito.Estado = 1
 				} else {
-					if (intentoPaquete2 < 3){
+					if intentoPaquete2 < 3 {
 						time.Sleep(time.Duration(tiempoEspera1) * time.Second)
 						sumarintento(camioncito.Paquete2.Intentos)
 						time.Sleep(time.Duration(tiempoEspera2) * time.Second)
-						entregarpedidos(camioncito, tiempoEspera1, tiempoEspera2 )
-					}else{
+						entregarpedidos(camioncito, tiempoEspera1, tiempoEspera2)
+					} else {
 						camioncito.Estado = 1
 						time.Sleep(time.Duration(tiempoEspera2) * time.Second)
-						entregarpedidos(camioncito, tiempoEspera1, tiempoEspera2 )
+						entregarpedidos(camioncito, tiempoEspera1, tiempoEspera2)
 					}
 				}
 			}
-		}else{
-			if(camioncito.Paquete1.Fechaentrega == "0"){
+		} else {
+			if camioncito.Paquete1.Fechaentrega == "0" {
 
 				valor1 := camioncito.Paquete1.Valor
 				intentoPaquete1, _ := strconv.Atoi(camioncito.Paquete1.Intentos)
@@ -137,16 +137,16 @@ func entregarpedidos(camioncito *camion, tiempoEspera1 int, tiempoEspera2 int) {
 					camioncito.Paquete1.Fechaentrega = time.Now().String()
 					camioncito.Estado = 0
 				} else {
-					if (intentoPaquete1 < 3){
+					if intentoPaquete1 < 3 {
 						time.Sleep(time.Duration(tiempoEspera1) * time.Second)
 						sumarintento(camioncito.Paquete1.Intentos)
 						time.Sleep(time.Duration(tiempoEspera2) * time.Second)
-						entregarpedidos(camioncito, tiempoEspera1, tiempoEspera2 )
-					}else{
+						entregarpedidos(camioncito, tiempoEspera1, tiempoEspera2)
+					} else {
 						camioncito.Estado = 0
 					}
 				}
-			}else{
+			} else {
 				valor2 := camioncito.Paquete2.Valor
 				intentoPaquete2, _ := strconv.Atoi(camioncito.Paquete2.Intentos)
 				val2, _ = strconv.Atoi(valor2)
@@ -156,12 +156,12 @@ func entregarpedidos(camioncito *camion, tiempoEspera1 int, tiempoEspera2 int) {
 					camioncito.Paquete1.Fechaentrega = time.Now().String()
 					camioncito.Estado = 0
 				} else {
-					if (intentoPaquete2 < 3){
+					if intentoPaquete2 < 3 {
 						time.Sleep(time.Duration(tiempoEspera1) * time.Second)
 						sumarintento(camioncito.Paquete2.Intentos)
 						time.Sleep(time.Duration(tiempoEspera2) * time.Second)
-						entregarpedidos(camioncito, tiempoEspera1, tiempoEspera2 )
-					}else{
+						entregarpedidos(camioncito, tiempoEspera1, tiempoEspera2)
+					} else {
 						camioncito.Estado = 0
 					}
 				}
@@ -169,10 +169,7 @@ func entregarpedidos(camioncito *camion, tiempoEspera1 int, tiempoEspera2 int) {
 
 		}
 
-		}
-
 	}
-
 }
 
 func main() {
@@ -203,7 +200,7 @@ func main() {
 	//cargamos camion 1
 	agregarpaquetes(conn, camion1) // AGREGO PAQUETE 1 (ESTADO = 1) (MEDIO)
 	agregarpaquetes(conn, camion1) // AGREGO PAQUETE 2 (ESTADO = 2) (LLENO)
-	log.Printf("estado camion 1 %v", camion1.Estado)
+	log.Printf("estado camion 1: %v", camion1.Estado)
 
 	//cargamos camion 2
 	//agregarpaquetes(conn, camion2) // AGREGO PAQUETE 1 (ESTADO = 1) (MEDIO)
@@ -215,6 +212,6 @@ func main() {
 
 	// IMPLEMENTAR UNA FUNCION QUE HAGA EL PROCESO DE REPARTO (LO DIFICIL ESTA AQUI)
 	entregarpedidos(camion1, tiempoEspera1, tiempoEspera2)
-	log.Printf("estado camion 1 %v", camion1.Estado)
+	log.Printf("estado camion 1: %v", camion1.Estado)
 
 }
