@@ -40,7 +40,10 @@ func agregarpaquetes(conn *grpc.ClientConn, camioncito *camion ) {
 	c := pb.NewProtosClient(conn)
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	r, err := c.SolicitarPaquete(ctx, &pb.SolicitudPaquete{Tipo: camioncito.Tipo})
-
+	defer cancel()
+	if err != nil {
+		log.Fatalf("No se pudo agregar el paquete. ERROR: %v", err)
+	}
 	if (camioncito.Estado == 0){
 		camioncito.Paquete1 = paquete{ Idpaquete:r.IdPaquete, Tipo:r.Tipo, Valor:r.Valor , Origen:r.Origen, 
 										Destino:r.Destino, Intentos: "0", Fechaentrega: "0"}
@@ -74,7 +77,7 @@ func main() {
 	//Interfaz inicial
 	log.Printf("[Camion] Ingrese el tiempo entre entregas de pedidos:")
 	fmt.Scanln(&tiempo_pedidos)
-	tiempoEspera, err := strconv.Atoi(tiempo_pedidos)
+	//tiempoEspera, err := strconv.Atoi(tiempo_pedidos)
 
 	// A veces, es posible que no conozca el número de iteraciones que necesitará 
 	//para completar una tarea concreta. En ese caso, puede omitir todas las instrucciones
