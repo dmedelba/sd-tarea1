@@ -45,15 +45,13 @@ func agregarpaquetes(conn *grpc.ClientConn, camioncito *camion ) {
 		camioncito.Paquete1 = paquete{ Idpaquete:r.IdPaquete, Tipo:r.Tipo, Valor:r.Valor , Origen:r.Origen, 
 										Destino:r.Destino, Intentos: "0", Fechaentrega: "0"}
 		camioncito.Estado = 1
-	}
-
-	// No se considerará el caso en que el estado es 2 puesto que con ese estado esta en proceso de envio y no
-	// de asignación de paquetes
-	else {
+	}else {
 		camioncito.Paquete2 = paquete{ Idpaquete:r.IdPaquete, Tipo:r.Tipo, Valor:r.Valor , Origen:r.Origen, 
 			Destino:r.Destino, Intentos: "0", Fechaentrega: "0"}
 		camioncito.Estado = 2
 	}
+	// No se considerará el caso en que el estado es 2 puesto que con ese estado esta en proceso de envio y no
+	// de asignación de paquetes
 }
 
 
@@ -67,7 +65,7 @@ func main() {
 
 	//Establecemos conexión con logisitica dist70:6970
 	var conn *grpc.ClientConn
-	conn, err := grpc.Dial(dist70:6970, grpc.WithInsecure())
+	conn, err := grpc.Dial("dist70:6970", grpc.WithInsecure())
 	if err != nil {
 		log.Fatalf("No se pudo establecer la conexión. ERROR: %v", err)
 	}
