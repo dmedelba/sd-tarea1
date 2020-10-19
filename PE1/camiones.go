@@ -48,12 +48,13 @@ func agregarpaquetes(conn *grpc.ClientConn, camioncito *camion) {
 	if err != nil {
 		log.Fatalf("No se pudo agregar el paquete. ERROR: %v", err)
 	}
-	log.Printf(r.IdPaquete)
-	log.Printf(r.CodigoSeguimiento)
-	log.Printf(r.Tipo)
-	log.Printf(r.Valor)
-	log.Printf(r.Origen)
-	log.Printf(r.Destino)
+	/*
+		log.Printf(r.IdPaquete)
+		log.Printf(r.CodigoSeguimiento)
+		log.Printf(r.Tipo)
+		log.Printf(r.Valor)
+		log.Printf(r.Origen)
+		log.Printf(r.Destino)*/
 
 	if camioncito.Estado == 0 {
 		camioncito.Paquete1 = paquete{Idpaquete: r.IdPaquete, Tipo: r.Tipo, Valor: r.Valor, Origen: r.Origen,
@@ -93,9 +94,18 @@ func entregarpedidos(camioncito *camion, tiempoEspera1 int, tiempoEspera2 int) {
 					time.Sleep(time.Duration(tiempoEspera1) * time.Second)
 					camioncito.Paquete1.Fechaentrega = time.Now().String()
 					camioncito.Estado = 1
+					entregarpedidos(camioncito, tiempoEspera1, tiempoEspera2 )
 				} else {
-					time.Sleep(time.Duration(tiempoEspera1) * time.Second)
-					sumarintento(camioncito.Paquete1.Intentos)
+					if (intentoPaquete1 < 3){
+						time.Sleep(time.Duration(tiempoEspera1) * time.Second)
+						sumarintento(camioncito.Paquete1.Intentos)
+						time.Sleep(time.Duration(tiempoEspera2) * time.Second)
+						entregarpedidos(camioncito, tiempoEspera1, tiempoEspera2 )
+					}else{
+						camioncito.Estado = 1
+						time.Sleep(time.Duration(tiempoEspera2) * time.Second)
+						entregarpedidos(camioncito, tiempoEspera1, tiempoEspera2 )
+					}
 				}
 			} else {
 				if (rand.Intn(100) < 80) && (intentoPaquete2 < 3) && (camioncito.Paquete2.Fechaentrega == "0") {
@@ -103,10 +113,62 @@ func entregarpedidos(camioncito *camion, tiempoEspera1 int, tiempoEspera2 int) {
 					camioncito.Paquete2.Fechaentrega = time.Now().String()
 					camioncito.Estado = 1
 				} else {
-					time.Sleep(time.Duration(tiempoEspera1) * time.Second)
-					sumarintento(camioncito.Paquete2.Intentos)
+					if (intentoPaquete2 < 3){
+						time.Sleep(time.Duration(tiempoEspera1) * time.Second)
+						sumarintento(camioncito.Paquete2.Intentos)
+						time.Sleep(time.Duration(tiempoEspera2) * time.Second)
+						entregarpedidos(camioncito, tiempoEspera1, tiempoEspera2 )
+					}else{
+						camioncito.Estado = 1
+						time.Sleep(time.Duration(tiempoEspera2) * time.Second)
+						entregarpedidos(camioncito, tiempoEspera1, tiempoEspera2 )
+					}
 				}
 			}
+		}else{
+			if(camioncito.Paquete1.Fechaentrega == "0"){
+
+				valor1 := camioncito.Paquete1.Valor
+				intentoPaquete1, _ := strconv.Atoi(camioncito.Paquete1.Intentos)
+				val1, _ = strconv.Atoi(valor1)
+
+				if (rand.Intn(100) < 80) && (intentoPaquete1 < 3) {
+					time.Sleep(time.Duration(tiempoEspera1) * time.Second)
+					camioncito.Paquete1.Fechaentrega = time.Now().String()
+					camioncito.Estado = 0
+				} else {
+					if (intentoPaquete1 < 3){
+						time.Sleep(time.Duration(tiempoEspera1) * time.Second)
+						sumarintento(camioncito.Paquete1.Intentos)
+						time.Sleep(time.Duration(tiempoEspera2) * time.Second)
+						entregarpedidos(camioncito, tiempoEspera1, tiempoEspera2 )
+					}else{
+						camioncito.Estado = 0
+					}
+				}
+			}else{
+				valor2 := camioncito.Paquete2.Valor
+				intentoPaquete2, _ := strconv.Atoi(camioncito.Paquete2.Intentos)
+				val2, _ = strconv.Atoi(valor2)
+
+				if (rand.Intn(100) < 80) && (intentoPaquete2 < 3) {
+					time.Sleep(time.Duration(tiempoEspera1) * time.Second)
+					camioncito.Paquete1.Fechaentrega = time.Now().String()
+					camioncito.Estado = 0
+				} else {
+					if (intentoPaquete2 < 3){
+						time.Sleep(time.Duration(tiempoEspera1) * time.Second)
+						sumarintento(camioncito.Paquete2.Intentos)
+						time.Sleep(time.Duration(tiempoEspera2) * time.Second)
+						entregarpedidos(camioncito, tiempoEspera1, tiempoEspera2 )
+					}else{
+						camioncito.Estado = 0
+					}
+				}
+			}
+
+		}
+
 		}
 
 	}
