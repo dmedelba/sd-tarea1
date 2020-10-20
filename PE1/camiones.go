@@ -94,6 +94,8 @@ func enviarEstadoPaquetes(conn *grpc.ClientConn,  camioncito *camion, estado str
 
 }
 
+//FUNCION ESCRIBIR ARCHIVO
+/*
 func registrarPedidoArchivo(camioncito *camion){
 	archivo, error := os.OpenFile("./camion_file/pedidos_camiones.csv", os.O_APPEND|os.O_WRONLY, os.ModeAppend)
 	if error != nil {
@@ -107,6 +109,7 @@ func registrarPedidoArchivo(camioncito *camion){
 	ww.WriteAll(informe_estado)
 	archivo.Close()
 }
+*/
 //sumamos intento en string.
 func sumarintento(cantidad_actual string) string {
 	intente, _ := strconv.Atoi(cantidad_actual)
