@@ -70,11 +70,11 @@ func enviarEstadoPaquetes(conn *grpc.ClientConn,  camioncito *camion, estado str
 	var intento_enviar string
 	var fecha_enviar string
 	if (paquete == "paquete1"){
-		id_enviar = camioncito.Paquete1.IdPaquete
+		id_enviar = camioncito.Paquete1.Idpaquete
 		intento_enviar = camioncito.Paquete1.Intentos
 		fecha_enviar = camioncito.Paquete1.Fechaentrega
 	}else if (paquete == "paquete2"){
-		id_enviar = camioncito.Paquete2.IdPaquete
+		id_enviar = camioncito.Paquete2.Idpaquete
 		intento_enviar = camioncito.Paquete2.Intentos
 		fecha_enviar = camioncito.Paquete2.Fechaentrega
 	}
@@ -127,7 +127,7 @@ func entregarpedidos(conn *grpc.ClientConn, camioncito *camion, tiempoEspera1 in
 					camioncito.Estado = 1
 					paquete_listo = "paquete1"
 					enviarEstadoPaquetes(conn,  camioncito, "Recibido", paquete_listo)
-					entregarpedidos(camioncito, tiempoEspera1, tiempoEspera2, paquete_listo)
+					entregarpedidos(conn, camioncito, tiempoEspera1, tiempoEspera2, paquete_listo)
 	
 				} else {
 					if intentoPaquete1 < 3 {
@@ -135,14 +135,14 @@ func entregarpedidos(conn *grpc.ClientConn, camioncito *camion, tiempoEspera1 in
 						time.Sleep(time.Duration(tiempoEspera1) * time.Second)
 						camioncito.Paquete1.Intentos = sumarintento(camioncito.Paquete1.Intentos)
 						time.Sleep(time.Duration(tiempoEspera2) * time.Second)
-						entregarpedidos(camioncito, tiempoEspera1, tiempoEspera2, paquetito)
+						entregarpedidos(conn, camioncito, tiempoEspera1, tiempoEspera2, paquetito)
 					} else {
 						//no pudo entregar el paquete => comunicar enviar			
 						camioncito.Estado = 1
 						paquete_listo = "paquete1"
 						enviarEstadoPaquetes(conn,  camioncito, "No Recibido", paquete_listo)
 						time.Sleep(time.Duration(tiempoEspera2) * time.Second)
-						entregarpedidos(camioncito, tiempoEspera1, tiempoEspera2,paquete_listo)
+						entregarpedidos(conn, camioncito, tiempoEspera1, tiempoEspera2,paquete_listo)
 					}
 				}
 			} else {
@@ -152,7 +152,7 @@ func entregarpedidos(conn *grpc.ClientConn, camioncito *camion, tiempoEspera1 in
 					camioncito.Estado = 1
 					paquete_listo = "paquete2"
 					enviarEstadoPaquetes(conn,  camioncito, "Recibido", paquete_listo)
-					entregarpedidos(camioncito, tiempoEspera1, tiempoEspera2, paquete_listo)
+					entregarpedidos(conn, camioncito, tiempoEspera1, tiempoEspera2, paquete_listo)
 					// logistica y avisar que la entrega del paquete finalizo, y cambia su estado.
 					
 				} else {
@@ -161,13 +161,13 @@ func entregarpedidos(conn *grpc.ClientConn, camioncito *camion, tiempoEspera1 in
 						time.Sleep(time.Duration(tiempoEspera1) * time.Second)
 						camioncito.Paquete2.Intentos = sumarintento(camioncito.Paquete2.Intentos)
 						time.Sleep(time.Duration(tiempoEspera2) * time.Second)
-						entregarpedidos(camioncito, tiempoEspera1, tiempoEspera2,paquetito)
+						entregarpedidos(conn, camioncito, tiempoEspera1, tiempoEspera2,paquetito)
 					} else {
 						paquete_listo = "paquete2"  //=> Se acabaron los intentos
 						camioncito.Estado = 1
 						enviarEstadoPaquetes(conn,  camioncito, "No Recibido", paquete_listo)
 						time.Sleep(time.Duration(tiempoEspera2) * time.Second)
-						entregarpedidos(camioncito, tiempoEspera1, tiempoEspera2, paquete_listo)
+						entregarpedidos(conn, camioncito, tiempoEspera1, tiempoEspera2, paquete_listo)
 					}
 				}
 			}
@@ -189,7 +189,7 @@ func entregarpedidos(conn *grpc.ClientConn, camioncito *camion, tiempoEspera1 in
 						time.Sleep(time.Duration(tiempoEspera1) * time.Second)
 						camioncito.Paquete1.Intentos = sumarintento(camioncito.Paquete1.Intentos)
 						time.Sleep(time.Duration(tiempoEspera2) * time.Second)
-						entregarpedidos(camioncito, tiempoEspera1, tiempoEspera2)
+						entregarpedidos(conn,camioncito, tiempoEspera1, tiempoEspera2)
 					} else {
 						camioncito.Estado = 0
 					}
@@ -208,7 +208,7 @@ func entregarpedidos(conn *grpc.ClientConn, camioncito *camion, tiempoEspera1 in
 						time.Sleep(time.Duration(tiempoEspera1) * time.Second)
 						camioncito.Paquete2.Intentos = sumarintento(camioncito.Paquete2.Intentos)
 						time.Sleep(time.Duration(tiempoEspera2) * time.Second)
-						entregarpedidos(camioncito, tiempoEspera1, tiempoEspera2)
+						entregarpedidos(conn, camioncito, tiempoEspera1, tiempoEspera2)
 					} else {
 						camioncito.Estado = 0
 					}
