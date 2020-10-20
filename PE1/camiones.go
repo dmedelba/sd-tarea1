@@ -126,6 +126,7 @@ func entregarpedidos(camioncito *camion, tiempoEspera1 int, tiempoEspera2 int) {
 				}
 			}
 		} else {
+			log.Printf("entro al else estado = 1")
 			if camioncito.Paquete1.Fechaentrega == "0" {
 
 				valor1 := camioncito.Paquete1.Valor
