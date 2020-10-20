@@ -185,11 +185,11 @@ func entregarpedidos(conn *grpc.ClientConn, camioncito *camion, tiempoEspera1 in
 					camioncito.Estado = 0
 				} else{
 					if intentoPaquete1 < 3 {
-						
+						var paquetito string
 						time.Sleep(time.Duration(tiempoEspera1) * time.Second)
 						camioncito.Paquete1.Intentos = sumarintento(camioncito.Paquete1.Intentos)
 						time.Sleep(time.Duration(tiempoEspera2) * time.Second)
-						entregarpedidos(conn,camioncito, tiempoEspera1, tiempoEspera2)
+						entregarpedidos(conn,camioncito, tiempoEspera1, tiempoEspera2, paquetito)
 					} else {
 						camioncito.Estado = 0
 					}
@@ -205,10 +205,11 @@ func entregarpedidos(conn *grpc.ClientConn, camioncito *camion, tiempoEspera1 in
 					camioncito.Estado = 0
 				} else {
 					if intentoPaquete2 < 3 {
+						var paquetito string
 						time.Sleep(time.Duration(tiempoEspera1) * time.Second)
 						camioncito.Paquete2.Intentos = sumarintento(camioncito.Paquete2.Intentos)
 						time.Sleep(time.Duration(tiempoEspera2) * time.Second)
-						entregarpedidos(conn, camioncito, tiempoEspera1, tiempoEspera2)
+						entregarpedidos(conn, camioncito, tiempoEspera1, tiempoEspera2, paquetito)
 					} else {
 						camioncito.Estado = 0
 					}
@@ -216,7 +217,7 @@ func entregarpedidos(conn *grpc.ClientConn, camioncito *camion, tiempoEspera1 in
 			}
 
 		}
-	}else if (comioncito.Tipo == "normal"){
+	}else if (camioncito.Tipo == "normal"){
 
 	}
 }
@@ -264,9 +265,10 @@ func main() {
 	}
 
 	//mandamos lo camiones a ruta
-	entregarpedidos(conn, camion1, tiempoEspera1, tiempoEspera2)
-	entregarpedidos(conn, camion2, tiempoEspera1, tiempoEspera2)
-	entregarpedidos(conn, camion3, tiempoEspera1, tiempoEspera2)
+	var paquetito string
+	entregarpedidos(conn, camion1, tiempoEspera1, tiempoEspera2, paquetito)
+	entregarpedidos(conn, camion2, tiempoEspera1, tiempoEspera2, paquetito)
+	entregarpedidos(conn, camion3, tiempoEspera1, tiempoEspera2, paquetito)
 
 	log.Printf("estado camion 1: %v", camion1.Estado)
 
