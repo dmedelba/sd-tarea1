@@ -37,8 +37,7 @@ type camion struct {
 	Estado   int // 0 = vacio; 1 = medio; 2 = lleno
 }
 
-// recibo un paquete y se lo asigno a un camion
-
+// recibo un paquete desde logistica (cola)y se lo asigno a un camion
 func agregarpaquetes(conn *grpc.ClientConn, camioncito *camion) {
 	//conexión con el servidor
 	c := pb.NewProtosClient(conn)
@@ -48,13 +47,7 @@ func agregarpaquetes(conn *grpc.ClientConn, camioncito *camion) {
 	if err != nil {
 		log.Fatalf("No se pudo agregar el paquete. ERROR: %v", err)
 	}
-	/*
-		log.Printf(r.IdPaquete)
-		log.Printf(r.CodigoSeguimiento)
-		log.Printf(r.Tipo)
-		log.Printf(r.Valor)
-		log.Printf(r.Origen)
-		log.Printf(r.Destino)*/
+
 
 	if camioncito.Estado == 0 {
 		camioncito.Paquete1 = paquete{Idpaquete: r.IdPaquete, Tipo: r.Tipo, Valor: r.Valor, Origen: r.Origen,
@@ -69,12 +62,42 @@ func agregarpaquetes(conn *grpc.ClientConn, camioncito *camion) {
 	// de asignación de paquetes
 }
 
+//comunicamos el estado del paquete a logistica
+func enviarEstadoPaquetes(conn *grpc.ClientConn,  camioncito *camion, estado string, paquete string){
+	c := pb.NewProtosClient(conn)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+	var paquetito_enviar string
+	if (paquete == "paquete1"){
+		paquetito_enviar = camioncito.Paquete1
+	}else if (paquete == "paquete2"){
+		paquetito_enviar = camioncito.Paquete2
+	}
+	r, err := c.ObtenerEstado(ctx, &pb.SolicitudEstado{
+		IdPaquete: paquetito_enviar.Idpaquete,
+		Intentos: paquetito_enviar.Intentos,
+		Estado: estado,
+		Fecha: paquetito_enviar.Fechaentrega
+	})
+	defer cancel()
+	if err != nil {
+		log.Fatalf("No se pudo enviar el estado del paquete a logistica. ERROR: %v", err)
+	}
+
+	if (r.Confirmacion == "1"){
+		log.Printf("[Camion] Estado del pedido entregado a logistica.")
+	}
+
+}
+
+//sumamos intento en string.
 func sumarintento(cantidad_actual string) string {
 	intente, _ := strconv.Atoi(cantidad_actual)
 	return strconv.Itoa(intente + 1)
 }
 
-func entregarpedidos(camioncito *camion, tiempoEspera1 int, tiempoEspera2 int) {
+//funcion que recibe el camion y los tiempo de espera entre entregas de paquete
+//la logica por dentras es poder entregar los paquetes y si falla aumenta la cantidad de intentos
+func entregarpedidos(conn *grpc.ClientConn, camioncito *camion, tiempoEspera1 int, tiempoEspera2 int, paquete_listo string) {
 	//se busca cual de los dos paquetes se entregara primero en caso de estar lleno
 	// defino variables auxiliares
 	var val1 int
@@ -89,22 +112,31 @@ func entregarpedidos(camioncito *camion, tiempoEspera1 int, tiempoEspera2 int) {
 			val1, _ = strconv.Atoi(valor1)
 			val2, _ = strconv.Atoi(valor2)
 
+			// 2 PAQUETES  , 3 INTENTOS CADA PAQUETE,  
+			//selecciona el paquete mas valioso, random segun la probabilidad
 			if val1 > val2 {
 				if (rand.Intn(100) < 80) && (intentoPaquete1 < 3) && (camioncito.Paquete1.Fechaentrega == "0") {
 					time.Sleep(time.Duration(tiempoEspera1) * time.Second)
 					camioncito.Paquete1.Fechaentrega = time.Now().String()
 					camioncito.Estado = 1
-					entregarpedidos(camioncito, tiempoEspera1, tiempoEspera2)
+					paquete_listo = "paquete1"
+					enviarEstadoPaquetes(conn,  camioncito, "Recibido", paquete_listo)
+					entregarpedidos(camioncito, tiempoEspera1, tiempoEspera2, paquete_listo)
+	
 				} else {
 					if intentoPaquete1 < 3 {
+						var paquetito string
 						time.Sleep(time.Duration(tiempoEspera1) * time.Second)
-						sumarintento(camioncito.Paquete1.Intentos)
+						camioncito.Paquete1.Intentos = sumarintento(camioncito.Paquete1.Intentos)
 						time.Sleep(time.Duration(tiempoEspera2) * time.Second)
-						entregarpedidos(camioncito, tiempoEspera1, tiempoEspera2)
+						entregarpedidos(camioncito, tiempoEspera1, tiempoEspera2, paquetito)
 					} else {
+						//no pudo entregar el paquete => comunicar enviar			
 						camioncito.Estado = 1
+						paquete_listo = "paquete1"
+						enviarEstadoPaquetes(conn,  camioncito, "No Recibido", paquete_listo)
 						time.Sleep(time.Duration(tiempoEspera2) * time.Second)
-						entregarpedidos(camioncito, tiempoEspera1, tiempoEspera2)
+						entregarpedidos(camioncito, tiempoEspera1, tiempoEspera2,paquete_listo)
 					}
 				}
 			} else {
@@ -112,23 +144,31 @@ func entregarpedidos(camioncito *camion, tiempoEspera1 int, tiempoEspera2 int) {
 					time.Sleep(time.Duration(tiempoEspera1) * time.Second)
 					camioncito.Paquete2.Fechaentrega = time.Now().String()
 					camioncito.Estado = 1
+					paquete_listo = "paquete2"
+					enviarEstadoPaquetes(conn,  camioncito, "Recibido", paquete_listo)
+					entregarpedidos(camioncito, tiempoEspera1, tiempoEspera2, paquete_listo)
+					// logistica y avisar que la entrega del paquete finalizo, y cambia su estado.
+					
 				} else {
 					if intentoPaquete2 < 3 {
+						var paquetito string
 						time.Sleep(time.Duration(tiempoEspera1) * time.Second)
-						sumarintento(camioncito.Paquete2.Intentos)
+						camioncito.Paquete2.Intentos = sumarintento(camioncito.Paquete2.Intentos)
 						time.Sleep(time.Duration(tiempoEspera2) * time.Second)
-						entregarpedidos(camioncito, tiempoEspera1, tiempoEspera2)
+						entregarpedidos(camioncito, tiempoEspera1, tiempoEspera2,paquetito)
 					} else {
+						paquete_listo = "paquete2"  //=> Se acabaron los intentos
 						camioncito.Estado = 1
+						enviarEstadoPaquetes(conn,  camioncito, "No Recibido", paquete_listo)
 						time.Sleep(time.Duration(tiempoEspera2) * time.Second)
-						entregarpedidos(camioncito, tiempoEspera1, tiempoEspera2)
+						entregarpedidos(camioncito, tiempoEspera1, tiempoEspera2, paquete_listo)
 					}
 				}
 			}
 		} else {
-			log.Printf("entro al else estado = 1")
-			if camioncito.Paquete1.Fechaentrega == "0" {
-
+			//ya entregamos un paquete, solo queda uno en el camión.
+			//log.Printf("entro al else estado = 1")
+			if (paquete_listo == "paquete2" || paquete_listo = ""){
 				valor1 := camioncito.Paquete1.Valor
 				intentoPaquete1, _ := strconv.Atoi(camioncito.Paquete1.Intentos)
 				val1, _ = strconv.Atoi(valor1)
@@ -137,17 +177,18 @@ func entregarpedidos(camioncito *camion, tiempoEspera1 int, tiempoEspera2 int) {
 					time.Sleep(time.Duration(tiempoEspera1) * time.Second)
 					camioncito.Paquete1.Fechaentrega = time.Now().String()
 					camioncito.Estado = 0
-				} else {
+				} else{
 					if intentoPaquete1 < 3 {
+						
 						time.Sleep(time.Duration(tiempoEspera1) * time.Second)
-						sumarintento(camioncito.Paquete1.Intentos)
+						camioncito.Paquete1.Intentos = sumarintento(camioncito.Paquete1.Intentos)
 						time.Sleep(time.Duration(tiempoEspera2) * time.Second)
 						entregarpedidos(camioncito, tiempoEspera1, tiempoEspera2)
 					} else {
 						camioncito.Estado = 0
 					}
 				}
-			} else {
+			} else if (paquete_listo == "paquete1" || paquete_listo = "") {
 				valor2 := camioncito.Paquete2.Valor
 				intentoPaquete2, _ := strconv.Atoi(camioncito.Paquete2.Intentos)
 				val2, _ = strconv.Atoi(valor2)
@@ -159,7 +200,7 @@ func entregarpedidos(camioncito *camion, tiempoEspera1 int, tiempoEspera2 int) {
 				} else {
 					if intentoPaquete2 < 3 {
 						time.Sleep(time.Duration(tiempoEspera1) * time.Second)
-						sumarintento(camioncito.Paquete2.Intentos)
+						camioncito.Paquete2.Intentos = sumarintento(camioncito.Paquete2.Intentos)
 						time.Sleep(time.Duration(tiempoEspera2) * time.Second)
 						entregarpedidos(camioncito, tiempoEspera1, tiempoEspera2)
 					} else {
@@ -169,6 +210,7 @@ func entregarpedidos(camioncito *camion, tiempoEspera1 int, tiempoEspera2 int) {
 			}
 
 		}
+	}else if (comioncito.Tipo == "normal"){
 
 	}
 }
@@ -178,12 +220,12 @@ func main() {
 	var tiempo_pedidos2 string
 	// se define cada camion (2 retail y 1 pyme)
 	camion1 := &camion{Tipo: "retail", Estado: 0}
-	//camion2 := &camion{Tipo: "retail", Estado: 0}
-	//camion3 := &camion{Tipo: "pyme", Estado: 0}
+	camion2 := &camion{Tipo: "retail", Estado: 0}
+	camion3 := &camion{Tipo: "pyme", Estado: 0}
 
-	//Establecemos conexión con logisitica dist70:6970
+	//Establecemos conexión con logisitica dist70:6071
 	var conn *grpc.ClientConn
-	conn, err := grpc.Dial("dist70:6079", grpc.WithInsecure())
+	conn, err := grpc.Dial("dist70:6071", grpc.WithInsecure())
 	if err != nil {
 		log.Fatalf("No se pudo establecer la conexión. ERROR: %v", err)
 	}
@@ -203,19 +245,23 @@ func main() {
 		agregarpaquetes(conn, camion1) // AGREGO PAQUETE 1 (ESTADO = 1) (MEDIO)
 		agregarpaquetes(conn, camion1) // AGREGO PAQUETE 2 (ESTADO = 2) (LLENO)
 	}
-
-	log.Printf("estado camion 1: %v", camion1.Estado)
-
 	//cargamos camion 2
-	//agregarpaquetes(conn, camion2) // AGREGO PAQUETE 1 (ESTADO = 1) (MEDIO)
-	//agregarpaquetes(conn, camion2) // AGREGO PAQUETE 2 (ESTADO = 2) (LLENO)
+	if camion2.Estado == 0{
+		agregarpaquetes(conn, camion2) // AGREGO PAQUETE 1 (ESTADO = 1) (MEDIO)
+		agregarpaquetes(conn, camion2) // AGREGO PAQUETE 2 (ESTADO = 2) (LLENO)
+	}
 
 	//cargamos camion 3
-	//agregarpaquetes(conn, camion3) // AGREGO PAQUETE 1 (ESTADO = 1) (MEDIO)
-	//agregarpaquetes(conn, camion3) // AGREGO PAQUETE 2 (ESTADO = 2) (LLENO)
+	if camion3.Estado == 0{
+		agregarpaquetes(conn, camion3) // AGREGO PAQUETE 1 (ESTADO = 1) (MEDIO)
+		agregarpaquetes(conn, camion3) // AGREGO PAQUETE 2 (ESTADO = 2) (LLENO)
+	}
 
-	// IMPLEMENTAR UNA FUNCION QUE HAGA EL PROCESO DE REPARTO (LO DIFICIL ESTA AQUI)
-	entregarpedidos(camion1, tiempoEspera1, tiempoEspera2)
+	//mandamos lo camiones a ruta
+	entregarpedidos(conn, camion1, tiempoEspera1, tiempoEspera2)
+	entregarpedidos(conn, camion2, tiempoEspera1, tiempoEspera2)
+	entregarpedidos(conn, camion3, tiempoEspera1, tiempoEspera2)
+
 	log.Printf("estado camion 1: %v", camion1.Estado)
 
 	// guargar los pedidos de camion el csv

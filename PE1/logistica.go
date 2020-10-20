@@ -18,8 +18,8 @@ import (
 )
 
 const (
-	portCliente = ":6078"
-	portCamion  = ":6079"
+	portCliente = ":6070"
+	portCamion  = ":6071"
 )
 
 // server is used to implement helloworld.GreeterServer.
@@ -222,13 +222,11 @@ func (s *server) SolicitarPaquete(ctx context.Context, in *pb.SolicitudPaquete) 
 		if cRetail.Front() != nil {
 			primerElemento := cRetail.Front()
 			paqueteEnviar = Paquete(primerElemento.Value.(Paquete))
-			//itemII = paqueteEnviar
 			cRetail.Remove(primerElemento)
 
 		} else if cPrioritario.Front() != nil {
 			primerElemento := cPrioritario.Front()
 			paqueteEnviar = Paquete(primerElemento.Value.(Paquete))
-			//itemII = paqueteEnviar
 			cPrioritario.Remove(primerElemento)
 
 		} else {
@@ -246,13 +244,11 @@ func (s *server) SolicitarPaquete(ctx context.Context, in *pb.SolicitudPaquete) 
 		if cPrioritario.Front() != nil {
 			primerElemento := cPrioritario.Front()
 			paqueteEnviar = Paquete(primerElemento.Value.(Paquete))
-			//itemII = paqueteEnviar
 			cPrioritario.Remove(primerElemento)
 
 		} else if cNormal.Front() != nil {
 			primerElemento := cNormal.Front()
 			paqueteEnviar = Paquete(primerElemento.Value.(Paquete))
-			//itemII = paqueteEnviar
 			cNormal.Remove(primerElemento)
 
 		} else {
@@ -268,6 +264,7 @@ func (s *server) SolicitarPaquete(ctx context.Context, in *pb.SolicitudPaquete) 
 
 		}
 	}
+	//cambiar estado del paquete a "En camino" en el csv.
 	return &pb.RespuestaPaquete{
 		IdPaquete:         paqueteEnviar.IdPaquete,
 		CodigoSeguimiento: paqueteEnviar.CodigoSeguimiento,
@@ -276,6 +273,22 @@ func (s *server) SolicitarPaquete(ctx context.Context, in *pb.SolicitudPaquete) 
 		Origen:            paqueteEnviar.Origen,
 		Destino:           paqueteEnviar.Destino,
 	}, nil
+}
+
+//Recibimos el estado del paquete de los camiones
+func (s *server) ObtenerEstado(ctx context.Context, in *pb.SolicitudEstado) (*pb.RespuestaEstado, error){
+	//recibimos el estado y actualizamos el csv de los pedidos.
+	string IdPaquete = 1;
+    string Intentos = 2;
+    string Estado = 3;
+	string Fecha = 4;
+	
+	log.Printf(in.IdPaquete)
+	log.Printf(in.Intentos)
+	log.Printf(in.Estado)
+	log.Printf(in.Fecha)
+	return &pb.RespuestaEstado{Confirmacion: "1"}, nil
+
 }
 
 func main() {
