@@ -82,7 +82,7 @@ func enviarEstadoPaquetes(conn *grpc.ClientConn,  camioncito *camion, estado str
 		IdPaquete: id_enviar,
 		Intentos: intento_enviar,
 		Estado: estado,
-		Fecha: fecha_enviar
+		Fecha: fecha_enviar,
 	})
 	defer cancel()
 	if err != nil {
