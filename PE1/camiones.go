@@ -94,6 +94,19 @@ func enviarEstadoPaquetes(conn *grpc.ClientConn,  camioncito *camion, estado str
 
 }
 
+func registrarPedidoArchivo(camioncito *camion){
+	archivo, error := os.OpenFile("./camion_file/pedidos_camiones.csv", os.O_APPEND|os.O_WRONLY, os.ModeAppend)
+	if error != nil {
+		log.Fatal(error)
+	}
+	defer archivo.Close()
+	var informe_estado [][]string
+
+	informe_estado = append(informe_estado, []string{camioncito.IdPaquete, camioncito.tipo, camioncito.valor, camioncito.Origen, camioncito.Intentos, camioncito.Fechaentrega})
+	ww := csv.NewWriter(archivo)
+	ww.WriteAll(informe_estado)
+	archivo.Close()
+}
 //sumamos intento en string.
 func sumarintento(cantidad_actual string) string {
 	intente, _ := strconv.Atoi(cantidad_actual)
@@ -126,6 +139,7 @@ func entregarpedidos(conn *grpc.ClientConn, camioncito *camion, tiempoEspera1 in
 					camioncito.Estado = 1
 					paquete_listo = "paquete1"
 					enviarEstadoPaquetes(conn,  camioncito, "Recibido", paquete_listo)
+					
 					entregarpedidos(conn, camioncito, tiempoEspera1, tiempoEspera2, paquete_listo)
 	
 				} else {
@@ -201,6 +215,7 @@ func entregarpedidos(conn *grpc.ClientConn, camioncito *camion, tiempoEspera1 in
 				if (rand.Intn(100) < 80) && (intentoPaquete2 < 3) {
 					time.Sleep(time.Duration(tiempoEspera1) * time.Second)
 					camioncito.Paquete1.Fechaentrega = time.Now().String()
+					enviarEstadoPaquetes(conn,  camioncito, "Recibido", paquete_listo)
 					camioncito.Estado = 0
 				} else {
 					if intentoPaquete2 < 3 {
@@ -210,6 +225,7 @@ func entregarpedidos(conn *grpc.ClientConn, camioncito *camion, tiempoEspera1 in
 						time.Sleep(time.Duration(tiempoEspera2) * time.Second)
 						entregarpedidos(conn, camioncito, tiempoEspera1, tiempoEspera2, paquetito)
 					} else {
+						enviarEstadoPaquetes(conn,  camioncito, "No Recibido", paquete_listo)
 						camioncito.Estado = 0
 					}
 				}

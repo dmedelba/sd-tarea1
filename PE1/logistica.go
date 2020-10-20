@@ -282,6 +282,10 @@ func (s *server) ObtenerEstado(ctx context.Context, in *pb.SolicitudEstado) (*pb
 	log.Printf(in.Intentos)
 	log.Printf(in.Estado)
 	log.Printf(in.Fecha)
+	
+	//guardamos el paquete en nuestro archivo general
+	// time :C
+
 	return &pb.RespuestaEstado{Confirmacion: "1"}, nil
 
 }
