@@ -174,7 +174,7 @@ func entregarpedidos(conn *grpc.ClientConn, camioncito *camion, tiempoEspera1 in
 		} else {
 			//ya entregamos un paquete, solo queda uno en el camión.
 			//log.Printf("entro al else estado = 1")
-			if (paquete_listo == "paquete2" || paquete_listo = ""){
+			if (paquete_listo == "paquete2" || paquete_listo == ""){
 				valor1 := camioncito.Paquete1.Valor
 				intentoPaquete1, _ := strconv.Atoi(camioncito.Paquete1.Intentos)
 				val1, _ = strconv.Atoi(valor1)
@@ -194,7 +194,7 @@ func entregarpedidos(conn *grpc.ClientConn, camioncito *camion, tiempoEspera1 in
 						camioncito.Estado = 0
 					}
 				}
-			} else if (paquete_listo == "paquete1" || paquete_listo = "") {
+			} else if (paquete_listo == "paquete1" || paquete_listo == "") {
 				valor2 := camioncito.Paquete2.Valor
 				intentoPaquete2, _ := strconv.Atoi(camioncito.Paquete2.Intentos)
 				val2, _ = strconv.Atoi(valor2)
