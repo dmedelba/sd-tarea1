@@ -278,11 +278,7 @@ func (s *server) SolicitarPaquete(ctx context.Context, in *pb.SolicitudPaquete) 
 //Recibimos el estado del paquete de los camiones
 func (s *server) ObtenerEstado(ctx context.Context, in *pb.SolicitudEstado) (*pb.RespuestaEstado, error){
 	//recibimos el estado y actualizamos el csv de los pedidos.
-	string IdPaquete = 1;
-    string Intentos = 2;
-    string Estado = 3;
-	string Fecha = 4;
-	
+
 	log.Printf(in.IdPaquete)
 	log.Printf(in.Intentos)
 	log.Printf(in.Estado)
