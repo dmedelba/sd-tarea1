@@ -8,7 +8,8 @@ Se definen las siguientes maquinas:
 3) dist71--> Camiones
 4) dist72--> Finanzas
 ----------------------------------------------------------------------------------------------------
-Para correr todos los archivos tiene que estar en la carpeta sd-tarea1: 
+
+IMPORTANTE: Para correr todos los archivos tiene que estar en la carpeta sd-tarea1/PE1 (cd sd-tarea1/PE1): 
 
 1) dist69--> make cliente
 2) dist70--> make logistica
