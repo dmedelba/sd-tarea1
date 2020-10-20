@@ -215,22 +215,18 @@ func (s *server) SolicitarPedidoRetail(ctx context.Context, in *pb.SolicitudPedi
 //enviamos paquete a el camion dependiendo de su tipo
 func (s *server) SolicitarPaquete(ctx context.Context, in *pb.SolicitudPaquete) (*pb.RespuestaPaquete, error) {
 	var paqueteEnviar Paquete
-	var enviar Paquete
 	var vacio string
 	tipodeCamion := in.Tipo
 
 	if tipodeCamion == "retail" {
 		if cRetail.Front() != nil {
 			primerElemento := cRetail.Front()
-			enviar = Paquete(primerElemento.Value.(Paquete))
-			//aux
-			paqueteEnviar = enviar
+			paqueteEnviar = Paquete(primerElemento.Value.(Paquete))
 			cRetail.Remove(primerElemento)
 
 		} else if cPrioritario.Front() != nil {
 			primerElemento := cPrioritario.Front()
-			enviar = Paquete(primerElemento.Value.(Paquete))
-			paqueteEnviar = enviar
+			paqueteEnviar = Paquete(primerElemento.Value.(Paquete))
 			cPrioritario.Remove(primerElemento)
 
 		} else {
@@ -247,14 +243,12 @@ func (s *server) SolicitarPaquete(ctx context.Context, in *pb.SolicitudPaquete) 
 	} else {
 		if cPrioritario.Front() != nil {
 			primerElemento := cPrioritario.Front()
-			enviar = Paquete(primerElemento.Value.(Paquete))
-			paqueteEnviar = enviar
+			paqueteEnviar = Paquete(primerElemento.Value.(Paquete))
 			cPrioritario.Remove(primerElemento)
 
 		} else if cNormal.Front() != nil {
 			primerElemento := cNormal.Front()
-			enviar = Paquete(primerElemento.Value.(Paquete))
-			paqueteEnviar = enviar
+			paqueteEnviar = Paquete(primerElemento.Value.(Paquete))
 			cNormal.Remove(primerElemento)
 
 		} else {
