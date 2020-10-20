@@ -215,18 +215,22 @@ func (s *server) SolicitarPedidoRetail(ctx context.Context, in *pb.SolicitudPedi
 //enviamos paquete a el camion dependiendo de su tipo
 func (s *server) SolicitarPaquete(ctx context.Context, in *pb.SolicitudPaquete) (*pb.RespuestaPaquete, error) {
 	var paqueteEnviar Paquete
+	var enviar Paquete
 	var vacio string
 	tipodeCamion := in.Tipo
 
 	if tipodeCamion == "retail" {
 		if cRetail.Front() != nil {
 			primerElemento := cRetail.Front()
-			paqueteEnviar = Paquete(primerElemento.Value.(Paquete))
+			enviar = Paquete(primerElemento.Value.(Paquete))
+			//aux
+			paqueteEnviar = enviar
 			cRetail.Remove(primerElemento)
 
 		} else if cPrioritario.Front() != nil {
 			primerElemento := cPrioritario.Front()
-			paqueteEnviar = Paquete(primerElemento.Value.(Paquete))
+			enviar = Paquete(primerElemento.Value.(Paquete))
+			paqueteEnviar = enviar
 			cPrioritario.Remove(primerElemento)
 
 		} else {
@@ -243,12 +247,14 @@ func (s *server) SolicitarPaquete(ctx context.Context, in *pb.SolicitudPaquete) 
 	} else {
 		if cPrioritario.Front() != nil {
 			primerElemento := cPrioritario.Front()
-			paqueteEnviar = Paquete(primerElemento.Value.(Paquete))
+			enviar = Paquete(primerElemento.Value.(Paquete))
+			paqueteEnviar = enviar
 			cPrioritario.Remove(primerElemento)
 
 		} else if cNormal.Front() != nil {
 			primerElemento := cNormal.Front()
-			paqueteEnviar = Paquete(primerElemento.Value.(Paquete))
+			enviar = Paquete(primerElemento.Value.(Paquete))
+			paqueteEnviar = enviar
 			cNormal.Remove(primerElemento)
 
 		} else {
@@ -278,7 +284,6 @@ func (s *server) SolicitarPaquete(ctx context.Context, in *pb.SolicitudPaquete) 
 //Recibimos el estado del paquete de los camiones
 func (s *server) ObtenerEstado(ctx context.Context, in *pb.SolicitudEstado) (*pb.RespuestaEstado, error){
 	//recibimos el estado y actualizamos el csv de los pedidos.
-
 	log.Printf(in.IdPaquete)
 	log.Printf(in.Intentos)
 	log.Printf(in.Estado)

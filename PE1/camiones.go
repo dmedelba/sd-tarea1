@@ -266,10 +266,6 @@ func main() {
 	//mandamos lo camiones a ruta
 	var paquetito string
 	
-	entregarpedidos(conn, camion1, tiempoEspera1, tiempoEspera2, paquetito)
-	entregarpedidos(conn, camion2, tiempoEspera1, tiempoEspera2, paquetito)
-	entregarpedidos(conn, camion3, tiempoEspera1, tiempoEspera2, paquetito)
-
 	//agregamos el primer intento por paquete a los camiones
 	camion1.Paquete1.Intentos = sumarintento(camion1.Paquete1.Intentos)
 	camion1.Paquete2.Intentos = sumarintento(camion1.Paquete2.Intentos)
@@ -279,6 +275,12 @@ func main() {
 
 	camion3.Paquete1.Intentos = sumarintento(camion3.Paquete1.Intentos)
 	camion3.Paquete2.Intentos = sumarintento(camion3.Paquete2.Intentos)
+	
+	entregarpedidos(conn, camion1, tiempoEspera1, tiempoEspera2, paquetito)
+	entregarpedidos(conn, camion2, tiempoEspera1, tiempoEspera2, paquetito)
+	entregarpedidos(conn, camion3, tiempoEspera1, tiempoEspera2, paquetito)
+
+	
 
 
 	// guargar los pedidos de camion el csv
