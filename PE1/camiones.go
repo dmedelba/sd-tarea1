@@ -66,17 +66,23 @@ func agregarpaquetes(conn *grpc.ClientConn, camioncito *camion) {
 func enviarEstadoPaquetes(conn *grpc.ClientConn,  camioncito *camion, estado string, paquete string){
 	c := pb.NewProtosClient(conn)
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
-	var paquetito_enviar string
+	var id_enviar string
+	var intento_enviar string
+	var fecha_enviar string
 	if (paquete == "paquete1"){
-		paquetito_enviar = camioncito.Paquete1
+		id_enviar = camioncito.Paquete1.IdPaquete
+		intento_enviar = camioncito.Paquete1.Intentos
+		fecha_enviar = camioncito.Paquete1.Fechaentrega
 	}else if (paquete == "paquete2"){
-		paquetito_enviar = camioncito.Paquete2
+		id_enviar = camioncito.Paquete2.IdPaquete
+		intento_enviar = camioncito.Paquete2.Intentos
+		fecha_enviar = camioncito.Paquete2.Fechaentrega
 	}
 	r, err := c.ObtenerEstado(ctx, &pb.SolicitudEstado{
-		IdPaquete: paquetito_enviar.Idpaquete,
-		Intentos: paquetito_enviar.Intentos,
+		IdPaquete: id_enviar,
+		Intentos: intento_enviar,
 		Estado: estado,
-		Fecha: paquetito_enviar.Fechaentrega
+		Fecha: fecha_enviar
 	})
 	defer cancel()
 	if err != nil {
