@@ -48,7 +48,6 @@ func agregarpaquetes(conn *grpc.ClientConn, camioncito *camion) {
 		log.Fatalf("No se pudo agregar el paquete. ERROR: %v", err)
 	}
 
-
 	if camioncito.Estado == 0 {
 		camioncito.Paquete1 = paquete{Idpaquete: r.IdPaquete, Tipo: r.Tipo, Valor: r.Valor, Origen: r.Origen,
 			Destino: r.Destino, Intentos: "0", Fechaentrega: "0"}
@@ -266,11 +265,21 @@ func main() {
 
 	//mandamos lo camiones a ruta
 	var paquetito string
+	
 	entregarpedidos(conn, camion1, tiempoEspera1, tiempoEspera2, paquetito)
 	entregarpedidos(conn, camion2, tiempoEspera1, tiempoEspera2, paquetito)
 	entregarpedidos(conn, camion3, tiempoEspera1, tiempoEspera2, paquetito)
 
-	log.Printf("estado camion 1: %v", camion1.Estado)
+	//agregamos el primer intento por paquete a los camiones
+	camion1.Paquete1.Intentos = sumarintento(camion1.Paquete1.Intentos)
+	camion1.Paquete2.Intentos = sumarintento(camion1.Paquete2.Intentos)
+
+	camion2.Paquete1.Intentos = sumarintento(camion2.Paquete1.Intentos)
+	camion2.Paquete2.Intentos = sumarintento(camion2.Paquete2.Intentos)
+
+	camion3.Paquete1.Intentos = sumarintento(camion3.Paquete1.Intentos)
+	camion3.Paquete2.Intentos = sumarintento(camion3.Paquete2.Intentos)
+
 
 	// guargar los pedidos de camion el csv
 
