@@ -199,8 +199,11 @@ func main() {
 	tiempoEspera2, _ := strconv.Atoi(tiempo_pedidos2)
 
 	//cargamos camion 1
-	agregarpaquetes(conn, camion1) // AGREGO PAQUETE 1 (ESTADO = 1) (MEDIO)
-	agregarpaquetes(conn, camion1) // AGREGO PAQUETE 2 (ESTADO = 2) (LLENO)
+	if camion1.Estado == 0 {
+		agregarpaquetes(conn, camion1) // AGREGO PAQUETE 1 (ESTADO = 1) (MEDIO)
+		agregarpaquetes(conn, camion1) // AGREGO PAQUETE 2 (ESTADO = 2) (LLENO)
+	}
+
 	log.Printf("estado camion 1: %v", camion1.Estado)
 
 	//cargamos camion 2
@@ -214,5 +217,7 @@ func main() {
 	// IMPLEMENTAR UNA FUNCION QUE HAGA EL PROCESO DE REPARTO (LO DIFICIL ESTA AQUI)
 	entregarpedidos(camion1, tiempoEspera1, tiempoEspera2)
 	log.Printf("estado camion 1: %v", camion1.Estado)
+
+	// guargar los pedidos de camion el csv
 
 }
